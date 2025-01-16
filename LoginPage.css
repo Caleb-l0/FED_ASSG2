@@ -9,6 +9,20 @@ body {
     background-color: #f0f0f0;
 }
 
+.top-bar {
+    background-color: #888888;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px 20px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+}
 .container {
     text-align: center;
     background: white;
