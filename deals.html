@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hot Deals - EasyElectronics</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="js/login.js" defer></script>
+</head>
+<body>
+        <div id="loginModal" class="modal" style="display: none;">
+            <div class="modal-content" id="modal-content">
+                <span class="close" onclick="closeLoginModal()">&times;</span>
+                <h2>Please Log In</h2>
+                <form onsubmit="handleLogin(event)" class="modal-form">
+                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <button type="submit" class="modal-button">Log In</button>
+                </form>
+                <p>or</p>
+                <button class="modal-button" onclick="browseAsGuest(event)">Browse as Guest</button>
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                fetch('header.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.body.insertAdjacentHTML('afterbegin', data);
+                        updateLoginState(); 
+                    });
+            });
+    
+            function updateLoginState() {
+                const loggedInUser = localStorage.getItem('loggedInUser');
+                const loginLink = document.getElementById('login-link'); 
+                const logo = document.getElementById('logo'); 
+                const modal = document.getElementById("loginModal");
+
+                modal.style.display = 'none';
+
+                if (loggedInUser) {
+                    modal.style.display = 'none'; 
+    
+                    if (loggedInUser === 'Guest') {
+                        loginLink.innerHTML = 'Login'; 
+                        loginLink.onclick = showLoginModal; 
+                    } else {
+                        loginLink.innerHTML = loggedInUser; 
+                        loginLink.style.fontFamily = 'inherit'; 
+                        loginLink.style.fontSize = '16px';
+                        loginLink.onclick = handleLogout; 
+                    }
+                    logo.style.display = 'none'; 
+                } else {
+                    logo.style.display = 'block';
+                    loginLink.innerHTML = 'Login';
+                    loginLink.onclick = showLoginModal; 
+                    
+                    if (!localStorage.getItem('hasGuestVisited') && !loggedInUser) {
+                        showLoginModal();
+                    }
+                }
+            }
+    
+            function showLoginModal() {
+                const modal = document.getElementById("loginModal");
+                modal.style.display = "flex"; 
+            }
+    
+            function closeLoginModal() {
+                const modal = document.getElementById("loginModal");
+                modal.style.display = "none"; 
+            }
+    
+            function handleLogin(event) {
+                event.preventDefault();
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+    
+                if (username && password) {
+                    localStorage.setItem('loggedInUser', username);
+                    closeLoginModal(); 
+                    updateLoginState(); 
+                } else {
+                    alert("Please enter a valid username and password.");
+                }
+            }
+    
+            function browseAsGuest(event) {
+                event.preventDefault(); 
+                localStorage.setItem('loggedInUser', 'Guest'); 
+                localStorage.setItem('hasGuestVisited', true); 
+                closeLoginModal();
+                updateLoginState(); 
+            }
+    
+            function handleLogout() {
+                localStorage.removeItem('loggedInUser'); 
+                localStorage.removeItem('hasGuestVisited'); 
+                window.location.reload(); 
+            }
+            function handleBuyNow(productName, productPrice) {
+            alert("You have selected: " + productName + " for $" + productPrice);}
+
+                let totalCost = 0;
+
+                function handleBuyNow(productName, productCost) {
+            totalCost += productCost;
+
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            cart.push({ name: productName, price: productCost });
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            alert("You have added " + productName + " to your cart. Total cost: $" + totalCost);
+        }
+        </script>
+
+    <section class="deals-hero">
+        <h1>Hot Deals</h1>
+        <p>Don't miss out on these exclusive offers.</p>
+    </section>
+
+    <section class="featured-items">
+        <h2>Featured Deals</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="https://www.tradeinn.com/f/13835/138353656/hp-m22f-21.5-full-hd-ips-monitor-75hz.webp" alt="Featured Product 1">
+                <h3>Full HD IPS monitor 75Hz</h3>
+                <p class="original-price">$280</p>
+                <p class="discounted-price">$150</p>
+                <a href="javascript:void(0);" class="buy-now-btn" data-name="Full HD IPS monitor 75Hz" data-price="150" onclick="handleBuyNow('Full HD IPS monitor 75Hz', 150)">Buy Now</a>
+            </div>
+            <div class="product-card">
+                <img src="https://www.gaincity.com/media/catalog/product/cache/6c6c50d4c233a553cee4f0d7353c6a74/i/p/iphone_16_pro_desert_titanium_pdp_image_position_1a_desert_titanium_colour__sg-en_3.jpg" alt="Featured Product 2">
+                <h3>APPLE IPHONE 16 PRO 256GB DESERT TITANIUM</h3>
+                <p class="original-price">$1750</p>
+                <p class="discounted-price">$1649</p>
+                <a href="javascript:void(0);" class="buy-now-btn" data-name="APPLE IPHONE 16 PRO 256GB DESERT TITANIUM" data-price="1649" onclick="handleBuyNow('APPLE IPHONE 16 PRO 256GB DESERT TITANIUM', 1649)">Buy Now</a>
+            </div>
+            <div class="product-card">
+                <img src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/homepod-mini-select-202210?wid=1080&hei=880&fmt=jpeg&qlt=90&.v=1720816295293" alt="Featured Product 3">
+                <h3>HomePod mini</h3>
+                <p class="original-price">$140</p>
+                <p class="discounted-price">$109</p>
+                <a href="javascript:void(0);" class="buy-now-btn" data-name="HomePod mini" data-price="109" onclick="handleBuyNow('HomePod mini', 109)">Buy Now</a>
+            </div>
+            <div class="product-card">
+                <img src="https://m.media-amazon.com/images/I/71tqXqn7LJL._AC_SX679_.jpg" alt="Featured Product 4">
+                <h3>Logitech 920-009720 Slim Folio Pro Backlit Keyboard Case</h3>
+                <p class="original-price">$179</p>
+                <p class="discounted-price">$123</p>
+                <a href="javascript:void(0);" class="buy-now-btn" data-name="Logitech 920-009720 Slim Folio Pro Backlit Keyboard Case" data-price="123" onclick="handleBuyNow('Logitech 920-009720 Slim Folio Pro Backlit Keyboard Case', 123)">Buy Now</a>
+            </div>
+            <div class="product-card">
+                <img src="https://www.tradeinn.com/f/13735/137351250/hp-laser-150nw-laser-multifunction-printer.webp" alt="Featured Product 5">
+                <h3>HP Laser 150NW Laser Multifunction Printer</h3>
+                <p class="original-price">$479</p>
+                <p class="discounted-price">$290</p>
+                <a href="javascript:void(0);" class="buy-now-btn" data-name="HP Laser 150NW Laser Multifunction Printer" data-price="290" onclick="handleBuyNow('HP Laser 150NW Laser Multifunction Printer', 290)">Buy Now</a>
+            </div>
+            <div class="product-card">
+                <img src="https://m.media-amazon.com/images/I/51YKV9W6F3L._AC_SX679_.jpg" alt="Featured Product 6">
+                <h3>Xiaomi Redmi Pad SE (8GB RAM + 256GB Storage)</h3>
+                <p class="original-price">$244</p>
+                <p class="discounted-price">$189</p>
+                <a href="javascript:void(0);" class="buy-now-btn" data-name="Xiaomi Redmi Pad SE" data-price="189" onclick="handleBuyNow('Xiaomi Redmi Pad SE', 189)">Buy Now</a>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; EasyElectronics</p>
+        <div class="footer-links">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Contact</a>
+        </div>
+    </footer>
+</body>
+</html>
