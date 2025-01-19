@@ -1,87 +1,37 @@
 <header class="header">
-    <div class="logo">
-        <a class="logo-btn" href="/" onclick="openLoginModal()">EasyElectronics</a>
-    </div>
-    <div class="search-bar">
-        <input type="text" placeholder="Search for products and etc.">
-        <button>Search</button>
-    </div>
-    <nav class="navbar">
-        <a href="/">Home</a>
-        <a href="deals.html">Hot Deals</a>
+    <div class="menu-container">
+        <!-- Dropdown Menu -->
         <div class="dropdown">
-            <a href="devices.html#smartphones" class="dropdown-btn">Devices</a>
+            <button class="dropbtn">☰ Menu</button>
             <div class="dropdown-content">
-                <a href="devices.html#smartphones">Smartphones</a> 
-                <a href="devices.html#laptops">Laptops</a> 
-                <a href="devices.html#tablets">Tablets</a> 
-                <a href="devices.html#other-devices">Other Devices</a> 
-            </div>
-        </div>  
-        <div class="dropdown">
-            <a href="accessories.html" class="dropdown-btn">Accessories</a>
-            <div class="dropdown-content">
-                <a href="#headphones">Headphones</a>
-                <a href="#chargers">Chargers</a>
-                <a href="#cases">Cases</a>
-                <a href="#others-accessories">Other Accessories</a>
+                <a href="index.html">Home</a>
+                <a href="categories.html">Categories</a>
+                <a href="listings.html">Listings</a>
+                <a href="favourites.html">Favourites</a>
+                <a href="support.html">Support</a>
+                <a href="account.html">Account</a>
+                <a href="#" onclick="handleLogout()">Logout</a>
             </div>
         </div>
-        <a href="support.html">Support</a>
 
-        <a href="#" id="login-link" onclick="handleLoginClick()">
-            <span id="login-text">Login</span> 
-        </a>
-        <a href="cart.html">
-            <img src="pic.png" alt="Shopping Cart" class="cart-icon">
-        </a>
-    </nav>
+        <!-- Company Name -->
+        <div class="company-name"><a href="index.html">MokeSell</a></div>
+        
+        <!-- Search Bar -->
+        <input type="text" class="search-bar" placeholder="Search...">
+
+        <!-- Navigation Links for Categories, Listings, Favourites -->
+        <div class="nav-icons">
+            <a href="categories.html">Categories</a>
+            <a href="listings.html">Listings</a>
+            <a href="favourites.html">Favourites</a>
+        </div>
+
+        <!-- Chat, Cart, Account (Desktop) -->
+        <div class="desktop-icons">
+            <a href="chat.html" class="chat-icon">Chat</a>
+            <a href="cart.html" class="cart-icon">Cart</a>
+            <a href="account.html" class="account-icon">Account</a>
+        </div>
+    </div>
 </header>
-<script src="login.js" defer></script>
-
-<script>
-function updateLoginState() {
-    const loggedInUser = localStorage.getItem('loggedInUser');
-    const loginLink = document.getElementById('login-link');
-    const loginText = document.getElementById('login-text');
-    
-    if (loggedInUser) {
-        if (loggedInUser === 'Guest') {
-            loginText.textContent = 'Login'; 
-            loginLink.onclick = openLoginModal; 
-        } else {
-            loginText.textContent = loggedInUser; 
-            loginLink.onclick = handleLogout;
-        }
-    } else {
-        loginText.textContent = 'Login'; 
-        loginLink.onclick = openLoginModal; 
-    }
-}
-function openLoginModal() {
-    const modal = document.getElementById("loginModal");
-    modal.style.display = "flex"; 
-}
-
-function closeLoginModal() {
-    const modal = document.getElementById("loginModal");
-    modal.style.display = "none"; 
-}
-
-function handleLoginClick() {
-    const loggedInUser = localStorage.getItem('loggedInUser');
-    if (loggedInUser) {
-        handleLogout(); 
-    } else {
-        openLoginModal(); 
-    }
-}
-
-function handleLogout() {
-    localStorage.removeItem('loggedInUser'); 
-    window.location.reload(); 
-}
-window.onload = function() {
-    updateLoginState(); 
-};
-</script>
