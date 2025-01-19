@@ -213,11 +213,16 @@ body {
         height: 15px;
     }
 
+    .nav-icons img {
+        width: 15px;  
+        height: 15px;
+    }
+
     .mobile-icons a:hover {
         background-color: #f0f0f0;
         color: #555;
     }
-
+    
     
 
     /* Ensure Search Bar stays in the second row on mobile */
