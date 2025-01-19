@@ -164,6 +164,25 @@ body {
     margin-right: 5px;
 }
 
+.scroll-container {
+    width: 80%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px 0;
+  }
+  
+  .scroll-items {
+    display: flex;
+    gap: 20px;
+  }
+  
+  
+  .icon-item img {
+    width: 40px;
+    height: 40px;
+  }
+  
+
 /* Mobile Layout Styles */
 @media (max-width: 768px) {
     
@@ -222,6 +241,8 @@ body {
         background-color: #f0f0f0;
         color: #555;
     }
+
+    
     
     
 
