@@ -6,7 +6,7 @@
     <title>Account System</title>
     <style>
         body { font-family: Arial, sans-serif; padding: 20px; }
-        input[type="text"], input[type="password"] { width: 100%; padding: 10px; margin: 10px 0; }
+        input[type="text"], input[type="password"], input[type="email"] { width: 100%; padding: 10px; margin: 10px 0; }
         button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
         button:hover { background-color: #45a049; }
         .container { width: 300px; margin: 0 auto; }
@@ -22,7 +22,9 @@
     <!-- Signup Form -->
     <div class="form" id="signupForm">
         <h3>Create Account</h3>
+        <input type="text" id="signupName" placeholder="Full Name">
         <input type="text" id="signupUsername" placeholder="Username">
+        <input type="email" id="signupEmail" placeholder="Email">
         <input type="password" id="signupPassword" placeholder="Password">
         <button onclick="signup()">Sign Up</button>
         <p>Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
@@ -50,10 +52,12 @@
 
     // Sign up function
     function signup() {
+        const name = document.getElementById('signupName').value;
         const username = document.getElementById('signupUsername').value;
+        const email = document.getElementById('signupEmail').value;
         const password = document.getElementById('signupPassword').value;
 
-        if (!username || !password) {
+        if (!name || !username || !email || !password) {
             alert('Please fill out all fields');
             return;
         }
@@ -65,7 +69,7 @@
                 'Content-Type': 'application/json',
                 'x-apikey': apiKey
             },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ name, username, email, password })
         })
         .then(response => response.json())
         .then(data => {
@@ -103,8 +107,7 @@
         .then(data => {
             if (data.length > 0) {
                 alert('Login successful!');
-                // Redirect to index.html after successful login
-                window.location.href = "index.html";  // Change to your existing index.html page
+                window.location.href = "index.html";  
             } else {
                 alert('Invalid username or password');
             }
