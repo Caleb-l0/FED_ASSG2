@@ -388,3 +388,121 @@ body {
     color: #888;
     margin: 20px 0;
 }
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Accessories Hero Section */
+.accessories-hero {
+    background-color: #f5f5f7;
+    text-align: center;
+    padding: 20px 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.accessories-hero h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.accessories-hero p {
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Featured Items Section */
+.featured-items {
+    text-align: center;
+    padding: 20px;
+}
+
+.featured-items h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Product Grid */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px 0;
+}
+
+/* Product Card */
+.product-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.product-card h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.product-card .price {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Buy Now Button */
+.buy-now-btn {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.buy-now-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Footer Section */
+.footer {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+}
+
+.footer p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 10px;
+}
