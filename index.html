@@ -24,21 +24,27 @@
           padding: 1rem;
         }
     
-        nav.categories ul {
-          display: flex;
-          list-style: none;
-          justify-content: center;
-          gap: 20px;
-        }
-    
-        nav.categories li {
-          color: white;
-          cursor: pointer;
-        }
-    
-        nav.categories li:hover {
-          color: #f39c12;
-        }
+        nav.categories {
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Prevent categories from wrapping to the next line */
+}
+
+nav.categories ul {
+  display: inline-flex;
+  list-style: none;
+  gap: 20px;
+  padding-bottom: 5px;
+}
+
+nav.categories li {
+  color: white;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+nav.categories li:hover {
+  color: #f39c12;
+}
     
         main {
           padding: 2rem;
