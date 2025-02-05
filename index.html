@@ -13,49 +13,49 @@
           padding: 0;
           box-sizing: border-box;
         }
-    
+
         body {
           font-family: Arial, sans-serif;
           background-color: #f4f4f4;
         }
-    
+
         header {
           background-color: #333;
           padding: 1rem;
         }
-    
+
         nav.categories {
-  overflow-x: auto; /* Enable horizontal scrolling */
-  white-space: nowrap; /* Prevent categories from wrapping to the next line */
-}
+          overflow-x: auto; /* Enable horizontal scrolling */
+          white-space: nowrap; /* Prevent categories from wrapping to the next line */
+        }
 
-nav.categories ul {
-  display: inline-flex;
-  list-style: none;
-  gap: 20px;
-  padding-bottom: 5px;
-}
+        nav.categories ul {
+          display: inline-flex;
+          list-style: none;
+          gap: 20px;
+          padding-bottom: 5px;
+        }
 
-nav.categories li {
-  color: white;
-  cursor: pointer;
-  padding: 10px 20px;
-}
+        nav.categories li {
+          color: white;
+          cursor: pointer;
+          padding: 10px 20px;
+        }
 
-nav.categories li:hover {
-  color: #f39c12;
-}
-    
+        nav.categories li:hover {
+          color: #f39c12;
+        }
+
         main {
           padding: 2rem;
         }
-    
+
         .product-list {
           display: flex;
           flex-wrap: wrap;
           gap: 20px;
         }
-    
+
         .product-card {
           background-color: white;
           padding: 1rem;
@@ -63,31 +63,68 @@ nav.categories li:hover {
           border-radius: 8px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-    
+
         .product-card img {
           width: 100%;
           height: auto;
           border-radius: 8px;
         }
-    
+
         .product-card h3 {
           font-size: 1.2rem;
           margin: 10px 0;
         }
-    
+
         .product-card p {
           color: #777;
           font-size: 0.9rem;
         }
-    
+
         .product-card .price {
           font-weight: bold;
           color: #e74c3c;
         }
-      </style>
+
+        /* Search bar styles */
+        .search-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 20px;
+        }
+
+        .search-bar {
+          width: 300px;
+          padding: 10px;
+          font-size: 1rem;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          margin-bottom: 10px;
+        }
+
+        .search-dropdown {
+          position: absolute;
+          background-color: white;
+          width: 300px;
+          max-height: 200px;
+          overflow-y: auto;
+          border: 1px solid #ccc;
+          display: none;
+          z-index: 10;
+        }
+
+        .search-dropdown div {
+          padding: 10px;
+          cursor: pointer;
+        }
+
+        .search-dropdown div:hover {
+          background-color: #f4f4f4;
+        }
+    </style>
 </head>
 <body>
-    <!-- Include the header -->
+    <!-- Retaining the header you provided -->
     <div id="header-container"></div>
     <script>
         fetch('header.html')
@@ -96,71 +133,95 @@ nav.categories li:hover {
                 document.getElementById('header-container').innerHTML = data;
             });
     </script>
-<h2>Categories</h2>
-<header>
-    <nav class="categories">
-      <ul>
-        <li data-category="all">All</li>
-        <li data-category="electronics">Electronics</li>
-        <li data-category="fashion">Fashion</li>
-        <li data-category="home">Home</li>
-        <li data-category="sports">Sports</li>
-      </ul>
-    </nav>
-  </header>
 
-  <section class="product-list">
-    <!-- Products will be dynamically displayed here -->
-  </section>
+    <!-- New search bar container -->
+    <div class="search-container">
+        <input type="text" class="search-bar" placeholder="Search products..." id="search-input">
+        <div class="search-dropdown" id="search-dropdown"></div>
+    </div>
 
-  <script>
-    // Sample data for products
-    const products = [
-      { name: 'Laptop', category: 'electronics', price: '$999', image: 'https://via.placeholder.com/300x200?text=Laptop' },
-      { name: 'T-Shirt', category: 'fashion', price: '$20', image: 'https://via.placeholder.com/300x200?text=T-Shirt' },
-      { name: 'Sofa', category: 'home', price: '$500', image: 'https://via.placeholder.com/300x200?text=Sofa' },
-      { name: 'Basketball', category: 'sports', price: '$30', image: 'https://via.placeholder.com/300x200?text=Basketball' },
-      { name: 'Smartphone', category: 'electronics', price: '$799', image: 'https://via.placeholder.com/300x200?text=Smartphone' },
-      { name: 'Jacket', category: 'fashion', price: '$100', image: 'https://via.placeholder.com/300x200?text=Jacket' },
-    ];
+    <!-- Category navigation -->
+    <header>
+        <nav class="categories">
+          <ul>
+            <li data-category="all">All</li>
+            <li data-category="electronics">Electronics</li>
+            <li data-category="fashion">Fashion</li>
+            <li data-category="home">Home</li>
+            <li data-category="sports">Sports</li>
+          </ul>
+        </nav>
+    </header>
 
-    // DOM elements
-    const productList = document.querySelector('.product-list');
-    const categoryItems = document.querySelectorAll('nav.categories li');
+    <section class="product-list">
+        <!-- Products will be dynamically displayed here -->
+    </section>
 
-    // Function to display products
-    function displayProducts(category) {
-      productList.innerHTML = ''; // Clear previous products
+    <script>
+        // Sample data for products
+        const products = [
+          { name: 'Laptop', category: 'electronics', price: '$999', image: 'https://via.placeholder.com/300x200?text=Laptop' },
+          { name: 'T-Shirt', category: 'fashion', price: '$20', image: 'https://via.placeholder.com/300x200?text=T-Shirt' },
+          { name: 'Sofa', category: 'home', price: '$500', image: 'https://via.placeholder.com/300x200?text=Sofa' },
+          { name: 'Basketball', category: 'sports', price: '$30', image: 'https://via.placeholder.com/300x200?text=Basketball' },
+          { name: 'Smartphone', category: 'electronics', price: '$799', image: 'https://via.placeholder.com/300x200?text=Smartphone' },
+          { name: 'Jacket', category: 'fashion', price: '$100', image: 'https://via.placeholder.com/300x200?text=Jacket' },
+        ];
 
-      const filteredProducts = category === 'all' ? products : products.filter(product => product.category === category);
+        // DOM elements
+        const productList = document.querySelector('.product-list');
+        const searchInput = document.getElementById('search-input');
+        const searchDropdown = document.getElementById('search-dropdown');
+        const categoryItems = document.querySelectorAll('nav.categories li');
 
-      filteredProducts.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.classList.add('product-card');
-        productCard.innerHTML = `
-          <img src="${product.image}" alt="${product.name}">
-          <h3>${product.name}</h3>
-          <p>${product.category}</p>
-          <span class="price">${product.price}</span>
-        `;
-        productList.appendChild(productCard);
-      });
-    }
+        let selectedCategory = 'all';  // To track the selected category
 
-    // Event listener for category click
-    categoryItems.forEach(item => {
-      item.addEventListener('click', () => {
-        const category = item.getAttribute('data-category');
-        displayProducts(category);
-      });
-    });
+        // Function to display products based on selected category
+        function displayProducts(category, searchQuery = '') {
+            productList.innerHTML = ''; // Clear previous products
 
-    // Initial display
-    displayProducts('all');
-  </script>
+            const filteredProducts = category === 'all' 
+                ? products 
+                : products.filter(product => product.category === category);
 
-     
+            const searchedProducts = filteredProducts.filter(product =>
+                product.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
 
+            searchedProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+                productCard.innerHTML = `
+                  <img src="${product.image}" alt="${product.name}">
+                  <h3>${product.name}</h3>
+                  <p>${product.category}</p>
+                  <span class="price">${product.price}</span>
+                `;
+                productList.appendChild(productCard);
+            });
+        }
+
+        // Function to filter products based on search input
+        function filterProducts(query) {
+            displayProducts(selectedCategory, query);
+        }
+
+        // Event listener for search input
+        searchInput.addEventListener('input', (e) => {
+            filterProducts(e.target.value);
+        });
+
+        // Event listener for category click
+        categoryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                selectedCategory = item.getAttribute('data-category');
+                displayProducts(selectedCategory, searchInput.value);  // Refresh products for the selected category
+            });
+        });
+
+        // Initial display
+        displayProducts('all');
+    </script>
 
 </body>
 </html>
