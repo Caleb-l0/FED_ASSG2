@@ -101,43 +101,51 @@
       <script>
         const apiUrl = 'https://testing-80a6.restdb.io/rest/userss'; 
         const apiKey = '678d1a12d31b8aa52a620cdc';  
-        const username = 'username';  
+        
     
-        // Fetch user data from RESTdb based on username
-        fetch(`${apiUrl}?q={"username":"${username}"}`, {
-          method: 'GET',
-          headers: {
-            'x-apikey': apiKey
-          }
-        })
-          .then(response => response.json())
-          .then(data => {
-            console.log('Fetched Data:', data);  
-    
-            // Check if any data was returned
-            if (data.length > 0) {
-              const user = data[0];  // Assuming user exists
-              console.log('User Data:', user);  // Debugging: log the first user object to check field names
-    
-              // Populate user data into the profile page
-              document.getElementById('user-name').textContent = user.name || 'Not provided';
-              document.getElementById('user-username').textContent = user.username || 'Not provided';
-              document.getElementById('user-email').textContent = user.email || 'Not provided';
-    
-              // Profile picture - if a profile image is stored (example: user.pfp)
-              const profilePic = user.pfp || '';  // Replace with your actual field name
-              const profilePicElement = document.getElementById('profile-pic');
-              if (profilePic) {
-                profilePicElement.innerHTML = `<img src="${profilePic}" alt="Profile Picture">`;
-              }
-            } else {
-              alert('User not found');
-            }
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            alert('Error fetching user details');
-          });
+        const urlParams = new URLSearchParams(window.location.search);
+const username = urlParams.get('username');
+
+if (!username) {
+    alert('Username not found in URL');
+    window.location.href = 'login.html'; // Redirect to login if no username is provided
+}
+
+// Fetch user data from RESTdb based on username
+fetch(`${apiUrl}?q={"username":"${username}"}`, {
+    method: 'GET',
+    headers: {
+        'x-apikey': apiKey
+    }
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Fetched Data:', data);  
+
+    // Check if any data was returned
+    if (data.length > 0) {
+        const user = data[0];  // Assuming user exists
+        console.log('User Data:', user);  // Debugging: log the first user object to check field names
+
+        // Populate user data into the profile page
+        document.getElementById('user-name').textContent = user.name || 'Not provided';
+        document.getElementById('user-username').textContent = user.username || 'Not provided';
+        document.getElementById('user-email').textContent = user.email || 'Not provided';
+
+        // Profile picture - if a profile image is stored (example: user.pfp)
+        const profilePic = user.pfp || '';  // Replace with your actual field name
+        const profilePicElement = document.getElementById('profile-pic');
+        if (profilePic) {
+            profilePicElement.innerHTML = `<img src="${profilePic}" alt="Profile Picture">`;
+        }
+    } else {
+        alert('User not found');
+    }
+})
+.catch(error => {
+    console.error('Error:', error);
+    alert('Error fetching user details');
+});
       </script>
     
     </body>
