@@ -1,4 +1,274 @@
-        var chatHistory = {}; // Object to store chat history for each product
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MokeSell - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .chats-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .chat-item {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .chat-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        
+        .chat-item span {
+            font-size: 18px;
+        }
+        
+        .popup {
+            display: none;
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        
+        #chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        #chat-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        #chat-messages {
+            padding: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        
+        #user-input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: none;
+            border-top: 1px solid #ccc;
+            outline: none;
+            background-color: #f1f1f1;
+        }
+        
+        .user {
+            background-color: #d1e7dd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+            margin-left: auto;
+            text-align: right;
+        }
+        
+        .bot {
+            background-color: #f8d7da;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+            margin-right: auto;
+            text-align: left;
+        }
+        
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header-container"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading header:', error));
+        });
+    </script>
+
+    <h2>Chats</h2>
+    
+    <div class="chats-container">
+        <div class="chat-item" id="chat1">
+            <img src="https://i.ebayimg.com/images/g/hcMAAOSwZnlkQQXV/s-l960.webp" alt="Category 1">
+            <span>USB-C Power Adapter</span>
+        </div>
+        <div class="chat-item" id="chat2">
+            <img src="https://images-cdn.ubuy.co.in/653ebb40c556d711a206eabc-hyper-bicycle-men-s-29-explorer.jpg" alt="Category 2">
+            <span>Mountain Bicycle</span>
+        </div>
+        <div class="chat-item" id="chat3">
+            <img src="https://techterms.com/img/xl/laptop_586.png" alt="Category 3">
+            <span>Lenovo Thinkpad</span>
+        </div>
+        <div class="chat-item" id="chat4">
+            <img src="https://down-sg.img.susercontent.com/file/cn-11134207-7r98o-lwz66ft3wgf7b4" alt="Category 4">
+            <span>iPhone 12 Cover</span>
+        </div>
+        <div class="chat-item" id="chat5">
+            <img src="https://m.media-amazon.com/images/I/81uRUnI9Y3L.jpg" alt="Category 5">
+            <span>Harry Potter Book Set</span>
+        </div>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <div id="chat-container">
+                <div id="chat-header">
+                    USB-C Power Adapter
+                </div>
+                <div id="chat-messages"></div>
+                <input type="text" id="user-input" placeholder="Type your message...">
+            </div>
+            <button id="close-chat">Close Chat</button>
+        </div>
+    </div>
+<script>
+
+    var responsesDatabase = {
+        "USB-C Power Adapter": {
+            greetings: {
+                hello: 'Hi there! How can I assist you with the USB-C Power Adapter?',
+                hi: 'Hello! Need any help with the USB-C Power Adapter?',
+                hey: 'Hey! How can I help with the USB-C Power Adapter?',
+            },
+            seller: {
+                'how much': 'The price for the USB-C Power Adapter is $20',
+                'where': 'The item is located at 1234 Tech Street',
+                'when': 'The event is on Sunday at 3pm',
+                'contact': 'You can contact us at 555-123-4567',
+                'is this item still available?': 'Yes, the USB-C Power Adapter is available!',
+                'can I negotiate the price?': 'Yes, the price can be negotiated, just let us know your offer!',
+            },
+            default: 'Sorry, I did not understand that. Can you rephrase?',
+        },
+        "Mountain Bicycle": {
+            greetings: {
+                hello: 'Hello! Looking for a Mountain Bicycle?',
+                hi: 'Hi there! Need more details about the Mountain Bicycle?',
+                hey: 'Hey! Let me know if you want to chat about the Mountain Bicycle!',
+            },
+            seller: {
+                'how much': 'The Mountain Bicycle is priced at $500',
+                'where': 'You can pick it up at 456 Bike Lane',
+                'when': 'The sale ends on Friday at 5pm',
+                'contact': 'Contact us at 555-987-6543 for more info',
+                'is this item still available?': 'Yes, it is still available for purchase.',
+                'can I negotiate the price?': 'Yes, we can discuss the price.',
+            },
+            default: 'Sorry, I didn\'t catch that. Could you say it differently?',
+        },
+        "Lenovo Thinkpad": {
+            greetings: {
+                hello: 'Hello! Looking for a Lenovo Thinkpad?',
+                hi: 'Hi there! Need more details about the Lenovo Thinkpad?',
+                hey: 'Hey! Let me know if you want to chat about the Lenovo Thinkpad!',
+            },
+            seller: {
+                'how much': 'The Lenovo Thinkpad is priced at $800',
+                'where': 'You can pick it up at 789 Tech Lane',
+                'when': 'The sale ends on Wednesday at 6pm',
+                'contact': 'Contact us at 555-111-2222 for more info',
+                'is this item still available?': 'Yes, it is still available for purchase.',
+                'can I negotiate the price?': 'Yes, we can discuss the price.',
+            },
+            default: 'Sorry, I didn\'t catch that. Could you say it differently?',
+        },
+        "iPhone 12 Cover": {
+            greetings: {
+                hello: 'Hello! Looking for an iPhone 12 Cover?',
+                hi: 'Hi there! Need more details about the iPhone 12 Cover?',
+                hey: 'Hey! Let me know if you want to chat about the iPhone 12 Cover!',
+            },
+            seller: {
+                'how much': 'The iPhone 12 Cover is priced at $15',
+                'where': 'You can pick it up at 123 Phone Street',
+                'when': 'The sale ends on Monday at 8pm',
+                'contact': 'Contact us at 555-555-5555 for more info',
+                'is this item still available?': 'Yes, it is still available for purchase.',
+                'can I negotiate the price?': 'Yes, we can discuss the price.',
+            },
+            default: 'Sorry, I didn\'t catch that. Could you say it differently?',
+        },
+        "Harry Potter Book Set": {
+            greetings: {
+                hello: 'Hello! Looking for the Harry Potter Book Set?',
+                hi: 'Hi there! Need more details about the Harry Potter Book Set?',
+                hey: 'Hey! Let me know if you want to chat about the Harry Potter Book Set!',
+            },
+            seller: {
+                'how much': 'The Harry Potter Book Set is priced at $60',
+                'where': 'You can pick it up at 345 Book Lane',
+                'when': 'The sale ends on Saturday at 4pm',
+                'contact': 'Contact us at 555-333-4444 for more info',
+                'is this item still available?': 'Yes, it is still available for purchase.',
+                'can I negotiate the price?': 'Yes, we can discuss the price.',
+            },
+            default: 'Sorry, I didn\'t catch that. Could you say it differently?',
+        },
+    };
+
+         var chatHistory = {}; 
 
         document.getElementById('user-input').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
@@ -23,7 +293,6 @@
             messageElement.textContent = message;
             document.getElementById('chat-messages').appendChild(messageElement);
 
-            // Store the message in the chat history
             var currentProduct = document.getElementById('chat-header').textContent;
             if (!chatHistory[currentProduct]) {
                 chatHistory[currentProduct] = [];
@@ -49,10 +318,8 @@
             document.getElementById('popup').style.display = 'block';
             document.getElementById('chat-header').textContent = product;
 
-            // Clear previous messages
             document.getElementById('chat-messages').innerHTML = '';
 
-            // Load the stored messages for the product
             if (chatHistory[product]) {
                 chatHistory[product].forEach(function(chat) {
                     appendMessage(chat.sender, chat.message);
@@ -64,9 +331,8 @@
             document.getElementById('popup').style.display = 'none';
         }
 
-        // Automatically close the popup when the page first loads
         document.addEventListener('DOMContentLoaded', function() {
-            closePopup(); // Close the popup immediately when the page loads
+            closePopup(); 
         });
 
         document.querySelectorAll('.chat-item').forEach(function(item) {
@@ -77,3 +343,10 @@
         });
 
         document.getElementById('close-chat').addEventListener('click', closePopup);
+</script>
+            <button onclick="closePopup()">Close Chat</button>
+        </div>
+    </div>
+
+</body>
+</html>
