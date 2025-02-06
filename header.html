@@ -23,20 +23,43 @@
     <!-- Second Banner: Search Bar and Icons -->
     <div class="second-banner">
         <!-- Search Bar -->
-        <!--<input type="text" class="search-bar" placeholder="Search...">
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="Search products..." id="search-input">
+            <button class="search-btn" onclick="performSearch()">Search</button>
+        </div>
 
-        <!-- Navigation Links for Listings, Favourites -->
+        <!-- Navigation Links -->
         <div class="nav-icons">
-            <a href="listings.html"><img src = "https://img.icons8.com/?size=100&id=7633&format=png&color=000000"></a>
-            <a href="favourites.html"><img src = "https://img.icons8.com/?size=100&id=MDpzRDCE7Alp&format=png&color=000000"></a>
+            <a href="listings.html"><img src="https://img.icons8.com/?size=100&id=7633&format=png&color=000000"></a>
+            <a href="favourites.html"><img src="https://img.icons8.com/?size=100&id=MDpzRDCE7Alp&format=png&color=000000"></a>
         </div>
 
         <!-- Chat, Cart, Account (Desktop) -->
         <div class="desktop-icons">
-            <a href="chat.html" class="chat-icon"><img src="https://img.icons8.com/?size=100&id=7859&format=png&color=000000"> </a>
-            <a href="cart.html" class="cart-icon"><img src ="https://img.icons8.com/?size=100&id=59997&format=png&color=000000"></a>
-            <a href="account.html" class="account-icon"><img src = "https://img.icons8.com/?size=100&id=2yC9SZKcXDdX&format=png&color=000000"></a>
+            <a href="chat.html" class="chat-icon"><img src="https://img.icons8.com/?size=100&id=7859&format=png&color=000000"></a>
+            <a href="cart.html" class="cart-icon"><img src="https://img.icons8.com/?size=100&id=59997&format=png&color=000000"></a>
+            <a href="account.html" class="account-icon"><img src="https://img.icons8.com/?size=100&id=2yC9SZKcXDdX&format=png&color=000000"></a>
         </div>
     </div>
 </header>
 
+<script>
+    function performSearch() {
+        const query = document.getElementById("search-input").value.toLowerCase();
+        const allSections = document.querySelectorAll('.product-grid');
+        
+        let found = false;
+        
+        allSections.forEach(section => {
+            const sectionTitle = section.previousElementSibling;
+            if (sectionTitle && sectionTitle.textContent.toLowerCase().includes(query)) {
+                sectionTitle.scrollIntoView({ behavior: 'smooth' });
+                found = true;
+            }
+        });
+
+        if (!found) {
+            alert("No results found for: " + query);
+        }
+    }
+</script>
