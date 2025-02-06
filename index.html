@@ -187,17 +187,15 @@
         insertProducts('product-list-3');
 
         function scrollLeft(listId) {
-            const productList = document.getElementById(listId);
-            const currentPosition = productList.scrollLeft;
-            const newPosition = currentPosition - 280;
-            productList.scrollLeft = newPosition;
-        }
+    const productList = document.getElementById(listId);
+    productList.scrollLeft -= 280;
+}
 
-        function scrollRight(listId) {
-            const productList = document.getElementById(listId);
-            const currentPosition = productList.scrollLeft;
-            const newPosition = currentPosition + 280; 
-        }
+
+function scrollRight(listId) {
+    const productList = document.getElementById(listId);
+    productList.scrollLeft += 280; 
+}
     </script>
 
 </body>
