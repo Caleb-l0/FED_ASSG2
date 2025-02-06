@@ -3,99 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accessories - EasyElectronics</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="js/login.js" defer></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('header.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-container').innerHTML = data;
-                });
+    <title>Listings</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .listing { border: 1px solid #ddd; padding: 10px; margin: 10px 0; }
+        img { max-width: 100px; display: block; margin-top: 5px; }
+        #listings-container { margin-top: 20px; }
+    </style>
+</head>
+<body>
 
-            const addButton = document.getElementById('add-item-btn');
-            addButton.addEventListener('click', function() {
-                const itemName = prompt('Enter item name:');
-                const itemPrice = prompt('Enter item price:');
-                const itemImage = prompt('Enter item image URL:');
-                
-                if(itemName && itemPrice && itemImage) {
-                    const newItem = createItemCard(itemName, itemPrice, itemImage);
-                    document.getElementById('item-list').appendChild(newItem);
+    <h2>Listings</h2>
+    <div id="user-info"></div>
+    
+    <!-- Login Form -->
+    <div id="login-section">
+        <input type="text" id="username" placeholder="Enter Username" required>
+        <button id="login-btn">Login</button>
+    </div>
+
+    <form id="listing-form" style="display:none;">
+        <input type="text" id="name" placeholder="Item Name" required>
+        <input type="number" id="price" placeholder="Price" required>
+        <input type="text" id="image" placeholder="Image URL">
+        <button type="submit">Post Listing</button>
+    </form>
+
+    <div id="listings-container"></div>
+
+    <script>
+        const API_KEY = "678d1a12d31b8aa52a620cdc";
+        const DB_NAME = "testing-80a6";
+        const LISTINGS_URL = `https://${DB_NAME}.restdb.io/rest/listings`;
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            const username = localStorage.getItem("username");
+            if (username) {
+                document.getElementById("user-info").innerText = `Logged in as: ${username}`;
+                document.getElementById("login-section").style.display = "none"; // Hide login section
+                document.getElementById("listing-form").style.display = "block"; // Show listing form
+                loadListings();
+            } else {
+                document.getElementById("login-section").style.display = "block"; // Show login section
+            }
+
+            document.getElementById("login-btn").addEventListener("click", () => {
+                const usernameInput = document.getElementById("username").value.trim();
+                if (usernameInput) {
+                    localStorage.setItem("username", usernameInput);
+                    document.getElementById("user-info").innerText = `Logged in as: ${usernameInput}`;
+                    document.getElementById("login-section").style.display = "none"; // Hide login section
+                    document.getElementById("listing-form").style.display = "block"; // Show listing form
+                    loadListings();
                 } else {
-                    alert('All fields are required!');
+                    alert("Please enter a valid username.");
                 }
+            });
+
+            document.getElementById("listing-form").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const name = document.getElementById("name").value;
+                const price = parseFloat(document.getElementById("price").value); // Convert to number
+                const image = document.getElementById("image").value;
+
+                if (!name || isNaN(price)) {
+                    alert("Name and valid Price are required!");
+                    return;
+                }
+
+                const listing = {
+                    name,
+                    price,
+                    image,
+                    user: localStorage.getItem("username") // Use the current logged-in user
+                };
+
+                await postListing(listing);
+                loadListings();
+                e.target.reset();
             });
         });
 
-        let totalCost = 0;
-
-        function handleBuyNow(productName, productPrice) {
-            totalCost += parseFloat(productPrice);
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.push({ name: productName, price: parseFloat(productPrice) });
-            localStorage.setItem('cart', JSON.stringify(cart));
-            alert("You have added " + productName + " to your cart. Total cost: $" + totalCost.toFixed(2));
+        async function loadListings() {
+            try {
+                const response = await fetch(LISTINGS_URL, {
+                    headers: { "x-apikey": API_KEY }
+                });
+                const listings = await response.json();
+                
+                // Filter listings to show only those posted by the current logged-in user
+                const userListings = listings.filter(listing => listing.user === localStorage.getItem("username"));
+                
+                displayListings(userListings);
+            } catch (error) {
+                console.error("Error loading listings:", error);
+            }
         }
 
-        function createItemCard(name, price, image) {
-            const itemCard = document.createElement('div');
-            itemCard.classList.add('product-card');
-            
-            const itemImage = document.createElement('img');
-            itemImage.src = image;
-            itemImage.alt = name;
-            
-            const itemName = document.createElement('h3');
-            itemName.textContent = name;
-            
-            const itemPrice = document.createElement('p');
-            itemPrice.classList.add('price');
-            itemPrice.textContent = `$${price}`;
-
-            const buyNowButton = document.createElement('button');
-            buyNowButton.classList.add('buy-now-btn');  
-            buyNowButton.textContent = 'Buy Now';
-            buyNowButton.addEventListener('click', function() {
-                handleBuyNow(name, price);
+        function displayListings(listings) {
+            const container = document.getElementById("listings-container");
+            container.innerHTML = "";
+            listings.forEach(listing => {
+                const div = document.createElement("div");
+                div.classList.add("listing");
+                div.innerHTML = `
+                    <strong>${listing.name}</strong> - $${listing.price}
+                    ${listing.image ? `<img src="${listing.image}" alt="Listing Image">` : ""}
+                `;
+                container.appendChild(div);
             });
+        }
 
-            itemCard.appendChild(itemImage);
-            itemCard.appendChild(itemName);
-            itemCard.appendChild(itemPrice);
-            itemCard.appendChild(buyNowButton);
+        async function postListing(listing) {
+            try {
+                const response = await fetch(LISTINGS_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-apikey": API_KEY
+                    },
+                    body: JSON.stringify(listing)
+                });
 
-            return itemCard;
+                if (!response.ok) {
+                    const errorDetails = await response.json();
+                    throw new Error(`Failed to post listing: ${response.statusText}, Details: ${JSON.stringify(errorDetails)}`);
+                }
+            } catch (error) {
+                console.error("Error posting listing:", error);
+            }
         }
     </script>
-</head>
-<body>
-    <div id="header-container"></div>
 
-    <section id="item-list" class="product-grid">
-        <div class="product-card">
-            <img src="https://example.com/item1.jpg" alt="Item 1">
-            <h3>Item 1</h3>
-            <p class="price">$100</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Item 1', 100)">Buy Now</button>
-        </div>
-        <div class="product-card">
-            <img src="https://example.com/item2.jpg" alt="Item 2">
-            <h3>Item 2</h3>
-            <p class="price">$200</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Item 2', 200)">Buy Now</button>
-        </div>
-        <div class="product-card">
-            <img src="https://example.com/item3.jpg" alt="Item 3">
-            <h3>Item 3</h3>
-            <p class="price">$300</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Item 3', 300)">Buy Now</button>
-        </div>
-    </section>
-
-    <button id="add-item-btn" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
-        Add Item
-    </button>
 </body>
 </html>
