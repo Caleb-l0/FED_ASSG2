@@ -52,6 +52,7 @@
     function signup() {
         const username = document.getElementById('signupUsername').value;
         const password = document.getElementById('signupPassword').value;
+        const email = document.getElementById('signup-Email').value;
 
         if (!username || !password) {
             alert('Please fill out all fields');
@@ -84,14 +85,8 @@
 
     // Login function with redirection to index.html
     function login() {
-<<<<<<< HEAD
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
-    
-=======
         const username = document.getElementById('loginUsername').value;
         const password = document.getElementById('loginPassword').value;
->>>>>>> 5d75d95cbecb18ebdd2689d2eb9ecbf4a262618b
 
         if (!username || !password) {
             alert('Please fill out all fields');
@@ -120,32 +115,6 @@
             alert('Error logging in');
         });
     }
-<<<<<<< HEAD
-
-    // Check user in RESTdb
-    fetch(`${apiUrl}?q={"username":"${username}","password":"${password}"}`, {
-        method: 'GET',
-        headers: {
-            'x-apikey': apiKey
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.length > 0) {
-            alert('Login successful!');
-            
-            window.location.href = `index.html?username=${username}`;
-        } else {
-            alert('Invalid username or password');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error logging in');
-    });
-}
-=======
->>>>>>> 5d75d95cbecb18ebdd2689d2eb9ecbf4a262618b
 </script>
 
 </body>
