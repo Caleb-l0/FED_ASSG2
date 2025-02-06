@@ -1,269 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MokeSell - Home</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* Basic reset and styling */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        
-        h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        
-        /* Chats container with vertical scroll */
-        .chats-container {
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-        
-        .chat-item {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-        
-        .chat-item img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 15px;
-        }
-        
-        .chat-item span {
-            font-size: 18px;
-        }
-        
-        /* The Popup box */
-        .popup {
-            display: none;
-            position: fixed;
-            width: 400px;
-            height: 400px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-        }
-        
-        /* Styling for the popup content */
-        #chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        #chat-header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            text-align: center;
-        }
-        
-        #chat-messages {
-            padding: 10px;
-            max-height: 250px;
-            overflow-y: auto;
-            flex-grow: 1;
-        }
-        
-        #user-input {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            border: none;
-            border-top: 1px solid #ccc;
-            outline: none;
-            background-color: #f1f1f1;
-        }
-        
-        /* Styling for user and bot messages */
-        .user {
-            background-color: #d1e7dd;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            max-width: 80%;
-            margin-left: auto;
-            text-align: right;
-        }
-        
-        .bot {
-            background-color: #f8d7da;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            max-width: 80%;
-            margin-right: auto;
-            text-align: left;
-        }
-        
-        /* Close button */
-        button {
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        
-        button:hover {
-            background-color: #218838;
-        }
-    </style>
+        var chatHistory = {}; // Object to store chat history for each product
 
-</head>
-<body>
-
-    <!-- Load the header from header.html -->
-    <div id="header-container"></div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('header.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-container').innerHTML = data;
-                })
-                .catch(error => console.error('Error loading header:', error));
+        document.getElementById('user-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                handleUserInput();
+            }
         });
-    </script>
 
-    <h2>Chats</h2>
-    
-    <div class="chats-container">
-        <div class="chat-item" onclick="openPopup()">
-            <img src="https://i.ebayimg.com/images/g/hcMAAOSwZnlkQQXV/s-l960.webp" alt="Category 1">
-            <span>USB-C Power Adapter</span>
-        </div>
-        <div class="chat-item">
-            <img src="category2.jpg" alt="Category 2">
-            <span>Category 2</span>
-        </div>
-        <div class="chat-item">
-            <img src="category3.jpg" alt="Category 3">
-            <span>Category 3</span>
-        </div>
-    </div>
+        function handleUserInput() {
+            var userInput = document.getElementById('user-input').value;
+            if (userInput.trim() !== '') {
+                appendMessage('user', userInput);
+                var currentProduct = document.getElementById('chat-header').textContent;
+                var response = getResponse(currentProduct, userInput);
+                appendMessage('bot', response);
+            }
+            document.getElementById('user-input').value = '';
+        }
 
-    <!-- The Popup Box -->
-    <div id="popup" class="popup">
-        <div class="popup-content">
-            <div id="chat-container">
-                <div id="chat-header">
-                    USB-C Power Adapter
-                </div>
-                <div id="chat-messages"></div>
-                <input type="text" id="user-input" placeholder="Type your message...">
-            </div>
-            
-            <script>
-                var responsesDatabase = {
-                    greetings: {
-                        hello: 'Hi there!',
-                        hi: 'Hello!',
-                        hey: 'Hey!',
-                    },
-                    feelings: {
-                        'how are you': 'I am just a computer program that was a pain to make, but how are you?',
-                        fine: 'That\'s great to hear!',
-                        good: 'I\'m doing well, thank you!',
-                        bad: 'I\'m sorry to hear that. If you need anything, you know where to find me!',
-                    },
-                    farewell: {
-                        bye: 'Goodbye! Have a great day!',
-                        goodbye: 'Farewell!',
-                        'see you': 'See you later!',
-                    },
-                    seller: {
-                        'how much': 'The price is $100',
-                        'where': 'The location is 1234 Main Street',
-                        'when': 'The event is on Saturday at 2pm',
-                        'contact': 'You can contact us at 123-456-7890',
-                        'is this item still available?': 'Yes, it is still available',
-                        'can I see more pictures?': 'Yes, I can send you more pictures',
-                        'can I negotiate the price?': 'Yes, we can negotiate the price',
-                        'i would like to buy this item': 'Great! Let\'s deal!',
-                    },
-                    default: 'I did not understand that. Can you please rephrase?',
-                };
-            
-                document.getElementById('user-input').addEventListener('keypress', function (e) {
-                    if (e.key === 'Enter') {
-                        handleUserInput();
-                    }
+        function appendMessage(sender, message) {
+            var messageElement = document.createElement('div');
+            messageElement.classList.add(sender);
+            messageElement.textContent = message;
+            document.getElementById('chat-messages').appendChild(messageElement);
+
+            // Store the message in the chat history
+            var currentProduct = document.getElementById('chat-header').textContent;
+            if (!chatHistory[currentProduct]) {
+                chatHistory[currentProduct] = [];
+            }
+            chatHistory[currentProduct].push({ sender: sender, message: message });
+        }
+
+        function getResponse(product, input) {
+            input = input.toLowerCase();
+            var productResponses = responsesDatabase[product];
+
+            if (productResponses) {
+                if (productResponses.greetings[input]) {
+                    return productResponses.greetings[input];
+                } else if (productResponses.seller[input]) {
+                    return productResponses.seller[input];
+                }
+            }
+            return productResponses ? productResponses.default : 'Sorry, I didn\'t catch that.';
+        }
+
+        function showPopup(product) {
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('chat-header').textContent = product;
+
+            // Clear previous messages
+            document.getElementById('chat-messages').innerHTML = '';
+
+            // Load the stored messages for the product
+            if (chatHistory[product]) {
+                chatHistory[product].forEach(function(chat) {
+                    appendMessage(chat.sender, chat.message);
                 });
-            
-                function handleUserInput() {
-                    var userInput = document.getElementById('user-input').value;
-                    if (userInput.trim() !== '') {
-                        appendMessage('user', userInput);
-                        document.getElementById('user-input').value = '';
-                        setTimeout(function () {
-                            var response = getBotResponse(userInput);
-                            appendMessage('bot', response);
-                        }, 500);
-                    }
-                }
-            
-                function getBotResponse(userInput) {
-                    userInput = userInput.toLowerCase();
-                    for (var category in responsesDatabase) {
-                        if (responsesDatabase.hasOwnProperty(category) && responsesDatabase[category][userInput]) {
-                            return responsesDatabase[category][userInput];
-                        }
-                    }
-                    return responsesDatabase.default;
-                }
-            
-                function appendMessage(sender, message) {
-                    var chatMessages = document.getElementById('chat-messages');
-                    var messageDiv = document.createElement('div');
-                    messageDiv.className = sender;
-                    messageDiv.innerHTML = message;
-                    chatMessages.appendChild(messageDiv);
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }
-            </script>
-            
-            <button onclick="closePopup()">Close</button>
-        </div>
-    </div>
-
-    <script>
-        function openPopup() {
-            document.getElementById("popup").style.display = "block";
+            }
         }
 
         function closePopup() {
-            document.getElementById("popup").style.display = "none";
+            document.getElementById('popup').style.display = 'none';
         }
-    </script>
 
-</body>
-</html>
+        // Automatically close the popup when the page first loads
+        document.addEventListener('DOMContentLoaded', function() {
+            closePopup(); // Close the popup immediately when the page loads
+        });
+
+        document.querySelectorAll('.chat-item').forEach(function(item) {
+            item.addEventListener('click', function() {
+                var product = item.querySelector('span').textContent;
+                showPopup(product);
+            });
+        });
+
+        document.getElementById('close-chat').addEventListener('click', closePopup);
