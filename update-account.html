@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Update Account</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input[type="text"], input[type="email"] { width: 100%; padding: 10px; margin: 10px 0; }
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+        .container { width: 300px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Update Account Details</h2>
+
+    <!-- Update Form -->
+    <div class="form" id="updateForm">
+        <input type="text" id="updateName" placeholder="Full Name">
+        <input type="text" id="updateUsername" placeholder="Username">
+        <input type="email" id="updateEmail" placeholder="Email">
+        <input type="hidden" id="userId">
+        <button onclick="updateAccount()">Update</button>
+        <p id="updateMsg" style="display:none; color: green;">Account details updated successfully!</p>
+    </div>
+</div>
+
+<script>
+    const apiUrl = 'https://testing-80a6.restdb.io/rest/userss';
+    const apiKey = '678d1a12d31b8aa52a620cdc';
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username') || localStorage.getItem('username');
+
+        if (!username) {
+            alert('Username not found. Redirecting to login page...');
+            window.location.href = 'login.html';
+        } else {
+            fetchUserData(username);
+        }
+    });
+
+    function fetchUserData(username) {
+        fetch(`${apiUrl}?q={"username":"${decodeURIComponent(username)}"}`, {
+            method: 'GET',
+            headers: {
+                'x-apikey': apiKey,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.length > 0) {
+                const user = data[0];
+                document.getElementById('updateName').value = user.name || '';
+                document.getElementById('updateUsername').value = user.username || '';
+                document.getElementById('updateEmail').value = user.email || '';
+                document.getElementById('userId').value = user._id;
+                console.log('User ID:', user._id); // Debugging: log the user ID
+            } else {
+                alert('User not found');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error fetching user details');
+        });
+    }
+
+    function updateAccount() {
+        const userId = document.getElementById('userId').value;
+        const updatedUser = {
+            name: document.getElementById('updateName').value,
+            username: document.getElementById('updateUsername').value,
+            email: document.getElementById('updateEmail').value
+        };
+
+        console.log('Updating user with ID:', userId); // Debugging: log the user ID before updating
+        console.log('Updated User Data:', updatedUser); // Debugging: log the updated user data
+
+        fetch(`${apiUrl}/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'x-apikey': apiKey,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedUser)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Update response:', data); // Debugging: log the response from the update request
+            document.getElementById('updateMsg').style.display = "block";
+            setTimeout(function () {
+                document.getElementById('updateMsg').style.display = "none";
+                window.location.href = `account.html?username=${encodeURIComponent(updatedUser.username)}`;
+            }, 3000);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error updating user details');
+        });
+    }
+</script>
+
+</body>
