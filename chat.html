@@ -1,10 +1,12 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MokeSell - Home</title>
     <link rel="stylesheet" href="style.css">
-    <style>/* Basic reset and styling */
+    <style>
+        /* Basic reset and styling */
         * {
             margin: 0;
             padding: 0;
@@ -24,8 +26,8 @@
         
         /* Chats container with vertical scroll */
         .chats-container {
-            max-height: 400px;  /* Adjust the height as needed */
-            overflow-y: auto;   /* Enables vertical scrolling */
+            max-height: 400px;
+            overflow-y: auto;
             padding-right: 10px;
         }
         
@@ -53,27 +55,26 @@
         
         /* The Popup box */
         .popup {
-            display: none;  /* Hidden by default */
+            display: none;
             position: fixed;
             width: 400px;
-            height: 400px; /* Increased height */
-            top: 50%;  /* Center the popup vertically */
-            left: 50%; /* Center the popup horizontally */
-            transform: translate(-50%, -50%);  /* Offset by half of its own width/height */
+            height: 400px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background-color: white;
             padding: 20px;
             display: flex;
             flex-direction: column;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            z-index: 1000;  /* Ensures the popup is on top */
+            z-index: 1000;
         }
         
         /* Styling for the popup content */
         #chat-container {
-            
             display: flex;
             flex-direction: column;
-            height: 100%;  /* Make it take the full height of the popup */
+            height: 100%;
         }
         
         #chat-header {
@@ -85,9 +86,9 @@
         
         #chat-messages {
             padding: 10px;
-            max-height: 250px; /* Adjust height to leave space for input */
+            max-height: 250px;
             overflow-y: auto;
-            flex-grow: 1;  /* Allow chat messages to grow and fill available space */
+            flex-grow: 1;
         }
         
         #user-input {
@@ -108,7 +109,6 @@
             border-radius: 10px;
             max-width: 80%;
             margin-left: auto;
-            margin-right: 0;
             text-align: right;
         }
         
@@ -118,7 +118,6 @@
             margin-bottom: 10px;
             border-radius: 10px;
             max-width: 80%;
-            margin-left: 0;
             margin-right: auto;
             text-align: left;
         }
@@ -137,21 +136,23 @@
         button:hover {
             background-color: #218838;
         }
-        
+    </style>
 
-        </style>
-
-<div id="header-container"></div>
-<script>
-    fetch('header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
-</script>
 </head>
 <body>
-    
+
+    <!-- Load the header from header.html -->
+    <div id="header-container"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading header:', error));
+        });
+    </script>
 
     <h2>Chats</h2>
     
@@ -168,7 +169,6 @@
             <img src="category3.jpg" alt="Category 3">
             <span>Category 3</span>
         </div>
-        <!-- Add more chat items here -->
     </div>
 
     <!-- The Popup Box -->
@@ -183,25 +183,24 @@
             </div>
             
             <script>
-                // Bot responses database
                 var responsesDatabase = {
                     greetings: {
                         hello: 'Hi there!',
                         hi: 'Hello!',
-                        hey: 'Hey',
+                        hey: 'Hey!',
                     },
                     feelings: {
-                        'how are you': 'I am just a computer program that was a pain to make, but how are you',
+                        'how are you': 'I am just a computer program that was a pain to make, but how are you?',
                         fine: 'That\'s great to hear!',
                         good: 'I\'m doing well, thank you!',
-                        bad: 'I\'m sorry to hear that if you need anything you know where to find me!',
+                        bad: 'I\'m sorry to hear that. If you need anything, you know where to find me!',
                     },
                     farewell: {
                         bye: 'Goodbye! Have a great day!',
                         goodbye: 'Farewell!',
-                        seeYou: 'See you later!',
+                        'see you': 'See you later!',
                     },
-                    seller:{
+                    seller: {
                         'how much': 'The price is $100',
                         'where': 'The location is 1234 Main Street',
                         'when': 'The event is on Saturday at 2pm',
@@ -209,10 +208,8 @@
                         'is this item still available?': 'Yes, it is still available',
                         'can I see more pictures?': 'Yes, I can send you more pictures',
                         'can I negotiate the price?': 'Yes, we can negotiate the price',
-                        'i would like to buy this item': 'Great! Lets deal',
-
+                        'i would like to buy this item': 'Great! Let\'s deal!',
                     },
-
                     default: 'I did not understand that. Can you please rephrase?',
                 };
             
@@ -230,24 +227,17 @@
                         setTimeout(function () {
                             var response = getBotResponse(userInput);
                             appendMessage('bot', response);
-                        }, 500); // Simulating response delay
+                        }, 500);
                     }
                 }
             
                 function getBotResponse(userInput) {
-                    // Convert user input to lowercase for case-insensitive comparison
                     userInput = userInput.toLowerCase();
-            
-                    // Check if the user input matches any predefined responses
                     for (var category in responsesDatabase) {
-                        if (responsesDatabase.hasOwnProperty(category)) {
-                            if (responsesDatabase[category][userInput]) {
-                                return responsesDatabase[category][userInput];
-                            }
+                        if (responsesDatabase.hasOwnProperty(category) && responsesDatabase[category][userInput]) {
+                            return responsesDatabase[category][userInput];
                         }
                     }
-            
-                    // If no match found, return the default response
                     return responsesDatabase.default;
                 }
             
@@ -266,16 +256,12 @@
     </div>
 
     <script>
-        // Function to open the popup box when the first chat item is clicked
         function openPopup() {
-            var popup = document.getElementById("popup");
-            popup.style.display = "block";  // Make the popup visible
+            document.getElementById("popup").style.display = "block";
         }
 
-        // Function to close the popup box when the close button is clicked
         function closePopup() {
-            var popup = document.getElementById("popup");
-            popup.style.display = "none";  // Hide the popup
+            document.getElementById("popup").style.display = "none";
         }
     </script>
 

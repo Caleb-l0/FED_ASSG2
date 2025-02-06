@@ -7,124 +7,116 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-        /* Basic reset */
         * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-          font-family: Arial, sans-serif;
-          background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
         }
 
-        header {
-          background-color: #333;
-          padding: 1rem;
+        .image-holder {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
         }
 
-        nav.categories {
-          overflow-x: auto; /* Enable horizontal scrolling */
-          white-space: nowrap; /* Prevent categories from wrapping to the next line */
+        .image-holder img {
+            width: 550px; 
+            height: 250px; 
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        nav.categories ul {
-          display: inline-flex;
-          list-style: none;
-          gap: 20px;
-          padding-bottom: 5px;
-        }
-
-        nav.categories li {
-          color: white;
-          cursor: pointer;
-          padding: 10px 20px;
-        }
-
-        nav.categories li:hover {
-          color: #f39c12;
-        }
-
-        main {
-          padding: 2rem;
+        .product-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
         }
 
         .product-list {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 20px;
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 20px 0;
+            width: 80%;
+            scrollbar-width: none;
+        }
+
+        .product-list::-webkit-scrollbar {
+            display: none; 
         }
 
         .product-card {
-          background-color: white;
-          padding: 1rem;
-          width: calc(33.33% - 20px);
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            padding: 1rem;
+            min-width: 250px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
         .product-card img {
-          width: 100%;
-          height: auto;
-          border-radius: 8px;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
         }
 
         .product-card h3 {
-          font-size: 1.2rem;
-          margin: 10px 0;
+            font-size: 1.2rem;
+            margin: 10px 0;
         }
 
         .product-card p {
-          color: #777;
-          font-size: 0.9rem;
+            color: #777;
+            font-size: 0.9rem;
         }
 
         .product-card .price {
-          font-weight: bold;
-          color: #e74c3c;
+            font-weight: bold;
+            color: #e74c3c;
         }
 
-        /* Search bar styles */
-        .search-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          margin-bottom: 20px;
+        .scroll-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            z-index: 1; 
         }
 
-        .search-bar {
-          width: 300px;
-          padding: 10px;
-          font-size: 1rem;
-          border-radius: 5px;
-          border: 1px solid #ccc;
-          margin-bottom: 10px;
+        .scroll-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
         }
 
-        .search-dropdown {
-          position: absolute;
-          background-color: white;
-          width: 300px;
-          max-height: 200px;
-          overflow-y: auto;
-          border: 1px solid #ccc;
-          display: none;
-          z-index: 10;
+        .scroll-left {
+            left: 55px;
         }
 
-        .search-dropdown div {
-          padding: 10px;
-          cursor: pointer;
-        }
-
-        .search-dropdown div:hover {
-          background-color: #f4f4f4;
+        .scroll-right {
+            right: 55px;
         }
     </style>
 </head>
 <body>
-    <!-- Retaining the header you provided -->
+
     <div id="header-container"></div>
     <script>
         fetch('header.html')
@@ -134,93 +126,78 @@
             });
     </script>
 
-    <!-- New search bar container -->
-    <div class="search-container">
-        <input type="text" class="search-bar" placeholder="Search products..." id="search-input">
-        <div class="search-dropdown" id="search-dropdown"></div>
+    <div class="image-holder">
+        <img src="https://via.placeholder.com/250x250?text=Image+1" alt="Image 1">
+        <img src="https://via.placeholder.com/250x250?text=Image+2" alt="Image 2">
     </div>
 
-    <!-- Category navigation -->
-    <header>
-        <nav class="categories">
-          <ul>
-            <li data-category="all">All</li>
-            <li data-category="electronics">Electronics</li>
-            <li data-category="fashion">Fashion</li>
-            <li data-category="home">Home</li>
-            <li data-category="sports">Sports</li>
-          </ul>
-        </nav>
-    </header>
+    <div class="product-container">
+        <button class="scroll-btn scroll-left" onclick="scrollLeft('product-list-1')">‹</button>
+        
+        <div class="product-list" id="product-list-1">
+        </div>
+        
+        <button class="scroll-btn scroll-right" onclick="scrollRight('product-list-1')">›</button>
+    </div>
 
-    <section class="product-list">
-        <!-- Products will be dynamically displayed here -->
-    </section>
+    <div class="product-container">
+        <button class="scroll-btn scroll-left" onclick="scrollLeft('product-list-2')">‹</button>
+        
+        <div class="product-list" id="product-list-2">
+        </div>
+        
+        <button class="scroll-btn scroll-right" onclick="scrollRight('product-list-2')">›</button>
+    </div>
+
+    <div class="product-container">
+        <button class="scroll-btn scroll-left" onclick="scrollLeft('product-list-3')">‹</button>
+        
+        <div class="product-list" id="product-list-3">
+        </div>
+        
+        <button class="scroll-btn scroll-right" onclick="scrollRight('product-list-3')">›</button>
+    </div>
 
     <script>
-        // Sample data for products
         const products = [
-          { name: 'Laptop', category: 'electronics', price: '$999', image: 'https://via.placeholder.com/300x200?text=Laptop' },
-          { name: 'T-Shirt', category: 'fashion', price: '$20', image: 'https://via.placeholder.com/300x200?text=T-Shirt' },
-          { name: 'Sofa', category: 'home', price: '$500', image: 'https://via.placeholder.com/300x200?text=Sofa' },
-          { name: 'Basketball', category: 'sports', price: '$30', image: 'https://via.placeholder.com/300x200?text=Basketball' },
-          { name: 'Smartphone', category: 'electronics', price: '$799', image: 'https://via.placeholder.com/300x200?text=Smartphone' },
-          { name: 'Jacket', category: 'fashion', price: '$100', image: 'https://via.placeholder.com/300x200?text=Jacket' },
+            { name: 'Laptop', price: '$999', image: 'https://via.placeholder.com/300x200?text=Laptop' },
+            { name: 'T-Shirt', price: '$20', image: 'https://via.placeholder.com/300x200?text=T-Shirt' },
+            { name: 'Sofa', price: '$500', image: 'https://via.placeholder.com/300x200?text=Sofa' },
+            { name: 'Basketball', price: '$30', image: 'https://via.placeholder.com/300x200?text=Basketball' },
+            { name: 'Smartphone', price: '$799', image: 'https://via.placeholder.com/300x200?text=Smartphone' },
+            { name: 'Jacket', price: '$100', image: 'https://via.placeholder.com/300x200?text=Jacket' }
         ];
 
-        // DOM elements
-        const productList = document.querySelector('.product-list');
-        const searchInput = document.getElementById('search-input');
-        const searchDropdown = document.getElementById('search-dropdown');
-        const categoryItems = document.querySelectorAll('nav.categories li');
-
-        let selectedCategory = 'all';  // To track the selected category
-
-        // Function to display products based on selected category
-        function displayProducts(category, searchQuery = '') {
-            productList.innerHTML = ''; // Clear previous products
-
-            const filteredProducts = category === 'all' 
-                ? products 
-                : products.filter(product => product.category === category);
-
-            const searchedProducts = filteredProducts.filter(product =>
-                product.name.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-
-            searchedProducts.forEach(product => {
+        function insertProducts(listId) {
+            const productList = document.getElementById(listId);
+            products.forEach(product => {
                 const productCard = document.createElement('div');
                 productCard.classList.add('product-card');
                 productCard.innerHTML = `
-                  <img src="${product.image}" alt="${product.name}">
-                  <h3>${product.name}</h3>
-                  <p>${product.category}</p>
-                  <span class="price">${product.price}</span>
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <span class="price">${product.price}</span>
                 `;
                 productList.appendChild(productCard);
             });
         }
 
-        // Function to filter products based on search input
-        function filterProducts(query) {
-            displayProducts(selectedCategory, query);
+        insertProducts('product-list-1');
+        insertProducts('product-list-2');
+        insertProducts('product-list-3');
+
+        function scrollLeft(listId) {
+            const productList = document.getElementById(listId);
+            const currentPosition = productList.scrollLeft;
+            const newPosition = currentPosition - 280;
+            productList.scrollLeft = newPosition;
         }
 
-        // Event listener for search input
-        searchInput.addEventListener('input', (e) => {
-            filterProducts(e.target.value);
-        });
-
-        // Event listener for category click
-        categoryItems.forEach(item => {
-            item.addEventListener('click', () => {
-                selectedCategory = item.getAttribute('data-category');
-                displayProducts(selectedCategory, searchInput.value);  // Refresh products for the selected category
-            });
-        });
-
-        // Initial display
-        displayProducts('all');
+        function scrollRight(listId) {
+            const productList = document.getElementById(listId);
+            const currentPosition = productList.scrollLeft;
+            const newPosition = currentPosition + 280; 
+        }
     </script>
 
 </body>
