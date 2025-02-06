@@ -104,10 +104,12 @@ const apiKey = '678d1a12d31b8aa52a620cdc';
 
 // Get the username from the query parameter
 const urlParams = new URLSearchParams(window.location.search);
-const username = urlParams.get('username');
+
+
+const username = urlParams.get('username') || localStorage.getItem('username');
 
 if (!username) {
-    alert('Username not found in URL. Redirecting to login page...');
+    alert('Username not found. Redirecting to login page...');
     window.location.href = 'login.html'; // Redirect to login if no username is provided
 } else {
     // Fetch user data from RESTdb based on username
