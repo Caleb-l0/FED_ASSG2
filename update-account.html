@@ -52,15 +52,19 @@
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Fetch response status:', response.status);
+            return response.json();
+        })
         .then(data => {
+            console.log('Fetched data:', data);
             if (data.length > 0) {
                 const user = data[0];
                 document.getElementById('updateName').value = user.name || '';
                 document.getElementById('updateUsername').value = user.username || '';
                 document.getElementById('updateEmail').value = user.email || '';
                 document.getElementById('userId').value = user._id;
-                console.log('User ID:', user._id); // Debugging: log the user ID
+                console.log('User ID:', user._id);
             } else {
                 alert('User not found');
             }
@@ -79,8 +83,8 @@
             email: document.getElementById('updateEmail').value
         };
 
-        console.log('Updating user with ID:', userId); // Debugging: log the user ID before updating
-        console.log('Updated User Data:', updatedUser); // Debugging: log the updated user data
+        console.log('Updating user with ID:', userId);
+        console.log('Updated User Data:', updatedUser);
 
         fetch(`${apiUrl}/${userId}`, {
             method: 'PUT',
@@ -90,20 +94,32 @@
             },
             body: JSON.stringify(updatedUser)
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Update response:', data); // Debugging: log the response from the update request
-            document.getElementById('updateMsg').style.display = "block";
-            setTimeout(function () {
-                document.getElementById('updateMsg').style.display = "none";
-                window.location.href = `account.html?username=${encodeURIComponent(updatedUser.username)}`;
-            }, 3000);
+        .then(response => {
+            console.log('Update response status:', response.status);
+            return response.json().then(data => ({
+                status: response.status,
+                body: data
+            }));
+        })
+        .then(({status, body}) => {
+            console.log('Update response data:', body);
+            if (status === 200 || status === 201) { // Checking for success status
+                document.getElementById('updateMsg').style.display = "block";
+                setTimeout(function () {
+                    document.getElementById('updateMsg').style.display = "none";
+                    window.location.href = `profile.html?username=${encodeURIComponent(updatedUser.username)}`;
+                }, 3000);
+            } else {
+                console.error('Update failed with status:', status, 'and response:', body);
+                alert('Error updating user details');
+            }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error during update request:', error);
             alert('Error updating user details');
         });
     }
 </script>
 
 </body>
+</html>
