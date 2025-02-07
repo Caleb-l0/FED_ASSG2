@@ -147,6 +147,18 @@
         .scroll-right {
             right: 55px;
         }
+
+        .heart {
+    cursor: pointer;
+    width: 10px; /* Set desired width */
+    height: 10px; /* Set desired height */
+    transition: transform 0.2s ease; /* Optional: adds smooth transition effect */
+}
+
+.heart:hover {
+    transform: scale(1.1); /* Optional: slightly enlarges the heart on hover */
+}
+
     </style>
 </head>
 <body>
@@ -244,6 +256,42 @@ function handleBuyNow(productName, productCost) {
             const productList = document.getElementById(listId);
             productList.scrollLeft += 280; 
         }
+
+        
+        function toggleLike(heartImage) {
+    const productName = heartImage.getAttribute('data-product');
+    let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+
+    if (favourites.includes(productName)) {
+        // If already liked, unlike it
+        heartImage.src = 'https://img.icons8.com/?size=100&id=85038&format=png&color=FA5252'; // Unfilled heart
+        favourites = favourites.filter(item => item !== productName);
+    } else {
+        // If not liked, like it
+        heartImage.src = 'https://img.icons8.com/?size=100&id=84881&format=png&color=FA5252'; // Filled heart
+        favourites.push(productName);
+    }
+
+    // Save updated list
+    localStorage.setItem('favourites', JSON.stringify(favourites));
+}
+
+// On page load, restore heart states
+window.onload = function() {
+    const heartIcons = document.querySelectorAll('.heart');
+    let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+
+    heartIcons.forEach(heart => {
+        const productName = heart.getAttribute('data-product');
+        if (favourites.includes(productName)) {
+            heart.src = 'https://img.icons8.com/?size=100&id=84881&format=png&color=FA5252'; // Filled heart
+        } else {
+            heart.src = 'https://img.icons8.com/?size=100&id=85038&format=png&color=FA5252'; // Unfilled heart
+        }
+    });
+};
+</script>
+
     </script>
 
 <section class="featured-items">
@@ -253,7 +301,8 @@ function handleBuyNow(productName, productCost) {
             <img src="https://metapod.com/cdn/shop/files/AppleAirPodsMaxHeadphones_Blue_1.png?v=1731646649&width=800" alt="Headphone 1">
             <h3>Apple AirPods Max Silver Black Pink</h3>
             <p class="price">$918</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Apple AirPods Max Silver Black Pink', 918)">Buy Now</button>
+            <img src="https://img.icons8.com/?size=100&id=85038&format=png&color=FA5252" alt="Like" class="heart" data-product="Apple AirPods Max Silver Black Pink"   onclick="toggleLike(this)">
+        
         </div>
         <div class="product-card" data-name="Sony WH-CH520 Wireless Bluetooth Headphones" data-price="139" data-category="Headphones">
             <img src="https://images.ctfassets.net/8cd2csgvqd3m/26XtRwxmomi69pWKqcuyS8/3a5285a2e0b4a5cb29484bcbe0763258/Packshot-Beoplay-H95-Gold-Tone-0006-Perspective-1200x1200px.png?q=90&fm=webp&w=1200&h=1200&fit=fill" alt="Headphone 2">
