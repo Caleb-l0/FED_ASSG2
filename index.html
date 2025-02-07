@@ -147,6 +147,18 @@
         .scroll-right {
             right: 55px;
         }
+
+        .heart {
+    cursor: pointer;
+    width: 10px; /* Set desired width */
+    height: 10px; /* Set desired height */
+    transition: transform 0.2s ease; /* Optional: adds smooth transition effect */
+}
+
+.heart:hover {
+    transform: scale(1.1); /* Optional: slightly enlarges the heart on hover */
+}
+
     </style>
 </head>
 <body>
@@ -224,11 +236,11 @@ function handleBuyNow(productName, productCost) {
             products.forEach(product => {
                 const productCard = document.createElement('div');
                 productCard.classList.add('product-card');
-                productCard.innerHTML = 
+                productCard.innerHTML = `
                     <img src="${product.image}" alt="${product.name}">
                     <h3>${product.name}</h3>
                     <span class="price">${product.price}</span>
-                ;
+                `;
                 productList.appendChild(productCard);
             });
         }
@@ -244,6 +256,42 @@ function handleBuyNow(productName, productCost) {
             const productList = document.getElementById(listId);
             productList.scrollLeft += 280; 
         }
+
+        
+        function toggleLike(heartImage) {
+    const productName = heartImage.getAttribute('data-product');
+    let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+
+    if (favourites.includes(productName)) {
+        // If already liked, unlike it
+        heartImage.src = 'https://img.icons8.com/?size=100&id=85038&format=png&color=FA5252'; // Unfilled heart
+        favourites = favourites.filter(item => item !== productName);
+    } else {
+        // If not liked, like it
+        heartImage.src = 'https://img.icons8.com/?size=100&id=84881&format=png&color=FA5252'; // Filled heart
+        favourites.push(productName);
+    }
+
+    // Save updated list
+    localStorage.setItem('favourites', JSON.stringify(favourites));
+}
+
+// On page load, restore heart states
+window.onload = function() {
+    const heartIcons = document.querySelectorAll('.heart');
+    let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+
+    heartIcons.forEach(heart => {
+        const productName = heart.getAttribute('data-product');
+        if (favourites.includes(productName)) {
+            heart.src = 'https://img.icons8.com/?size=100&id=84881&format=png&color=FA5252'; // Filled heart
+        } else {
+            heart.src = 'https://img.icons8.com/?size=100&id=85038&format=png&color=FA5252'; // Unfilled heart
+        }
+    });
+};
+</script>
+
     </script>
 
 <section class="featured-items">
@@ -253,7 +301,8 @@ function handleBuyNow(productName, productCost) {
             <img src="https://metapod.com/cdn/shop/files/AppleAirPodsMaxHeadphones_Blue_1.png?v=1731646649&width=800" alt="Headphone 1">
             <h3>Apple AirPods Max Silver Black Pink</h3>
             <p class="price">$918</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Apple AirPods Max Silver Black Pink', 918)">Buy Now</button>
+            <img src="https://img.icons8.com/?size=100&id=85038&format=png&color=FA5252" alt="Like" class="heart" data-product="Apple AirPods Max Silver Black Pink"   onclick="toggleLike(this)">
+        
         </div>
         <div class="product-card" data-name="Sony WH-CH520 Wireless Bluetooth Headphones" data-price="139" data-category="Headphones">
             <img src="https://images.ctfassets.net/8cd2csgvqd3m/26XtRwxmomi69pWKqcuyS8/3a5285a2e0b4a5cb29484bcbe0763258/Packshot-Beoplay-H95-Gold-Tone-0006-Perspective-1200x1200px.png?q=90&fm=webp&w=1200&h=1200&fit=fill" alt="Headphone 2">
@@ -262,13 +311,13 @@ function handleBuyNow(productName, productCost) {
             <button class="buy-now-btn" onclick="handleBuyNow('Sony WH-CH520 Wireless Bluetooth Headphones', 139)">Buy Now</button>
         </div>
         <div class="product-card" data-name="Airpods 3 Lightning" data-price="36" data-category="Headphones">
-            <img src="https://m.media-amazon.com/images/I/51oc-XVy47L.__AC_SX300_SY300_QL70_ML2_.jpg" alt="Headphone 3">
+            <img src="https://m.media-amazon.com/images/I/51oc-XVy47L._AC_SX300_SY300_QL70_ML2.jpg" alt="Headphone 3">
             <h3>Airpods 3 Lightning</h3>
             <p class="price">$36</p>
             <button class="buy-now-btn" onclick="handleBuyNow('Airpods 3 Lightning', 36)">Buy Now</button>
         </div>
         <div class="product-card" data-name="SAMSUNG Galaxy Buds 3" data-price="289" data-category="Headphones">
-            <img src="https://m.media-amazon.com/images/I/61DWCJmKe7L.__AC_SX300_SY300_QL70_ML2_.jpg" alt="Headphone 4">
+            <img src="https://m.media-amazon.com/images/I/61DWCJmKe7L._AC_SX300_SY300_QL70_ML2.jpg" alt="Headphone 4">
             <h3>SAMSUNG Galaxy Buds 3</h3>
             <p class="price">$289</p>
             <button class="buy-now-btn" onclick="handleBuyNow('SAMSUNG Galaxy Buds 3', 289)">Buy Now</button>
@@ -312,13 +361,13 @@ function handleBuyNow(productName, productCost) {
             <button class="buy-now-btn" onclick="handleBuyNow('IBENZER MacBook glitter case with keyboard cover', 30)">Buy Now</button>
         </div>
         <div class="product-card" data-name="mCover Case for Microsoft Surface Laptop Windows PC" data-price="43" data-category="Cases">
-            <img src="https://m.media-amazon.com/images/I/51zPqDKBi0L._AC_SL1500_.jpg" alt="Case 2">
+            <img src="https://m.media-amazon.com/images/I/51zPqDKBi0L.AC_SL1500.jpg" alt="Case 2">
             <h3>mCover Case for Microsoft Surface Laptop Windows PC</h3>
             <p class="price">$43</p>
             <button class="buy-now-btn" onclick="handleBuyNow('mCover Case for Microsoft Surface Laptop Windows PC', 43)">Buy Now</button>
         </div>
         <div class="product-card" data-name="Shockproof iPhone Bumper Cover, Anti-Scratch Clear Back" data-price="10" data-category="Cases">
-            <img src="https://m.media-amazon.com/images/I/61VOapslcsL._AC_SX679_.jpg" alt="Case 3">
+            <img src="https://m.media-amazon.com/images/I/61VOapslcsL.AC_SX679.jpg" alt="Case 3">
             <h3>Shockproof iPhone Bumper Cover, Anti-Scratch Clear Back</h3>
             <p class="price">$10</p>
             <button class="buy-now-btn" onclick="handleBuyNow('Shockproof iPhone Bumper Cover, Anti-Scratch Clear Back', 10)">Buy Now</button>
@@ -340,7 +389,7 @@ function handleBuyNow(productName, productCost) {
             <button class="buy-now-btn" onclick="handleBuyNow('APPLE HOMEPOD WHITE MQJ83PA', 399)">Buy Now</button>
         </div>
         <div class="product-card" data-name="Logitech Z407 40 W Anthracite Wired & Wireless Z407" data-price="118" data-category="Other Accessories">
-            <img src="https://m.media-amazon.com/images/I/61srIgX9KYL._AC_SX679_.jpg" alt="Accessory 2">
+            <img src="https://m.media-amazon.com/images/I/61srIgX9KYL.AC_SX679.jpg" alt="Accessory 2">
             <h3>Logitech Z407 40 W Anthracite Wired & Wireless Z407</h3>
             <p class="price">$118</p>
             <button class="buy-now-btn" onclick="handleBuyNow('Logitech Z407 40 W Anthracite Wired & Wireless Z407', 118)">Buy Now</button>
@@ -352,7 +401,7 @@ function handleBuyNow(productName, productCost) {
             <button class="buy-now-btn" onclick="handleBuyNow('Magic Mouse (USB‑C) - White Multi-Touch Surface', 99)">Buy Now</button>
         </div>
         <div class="product-card" data-name="HP Wireless Mouse, Z3700, Quiet, Dual Wireless Mouse" data-price="15" data-category="Other Accessories">
-            <img src="https://m.media-amazon.com/images/I/61qtfg+W4NL._AC_SX679_.jpg" alt="Accessory 4">
+            <img src="https://m.media-amazon.com/images/I/61qtfg+W4NL.AC_SX679.jpg" alt="Accessory 4">
             <h3>HP Wireless Mouse, Z3700, Quiet, Dual Wireless Mouse</h3>
             <p class="price">$15</p>
             <button class="buy-now-btn" onclick="handleBuyNow('HP Wireless Mouse, Z3700, Quiet, Dual Wireless Mouse', 15)">Buy Now</button>
@@ -362,4 +411,4 @@ function handleBuyNow(productName, productCost) {
 </section>
 
 </body>
-</html> 
+</html>

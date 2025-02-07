@@ -3,27 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MokeSell - Favourites</title>
+    <title>Favourites</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .favourite-item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
         }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+
+        .favourite-name {
+            margin-left: 10px;
         }
-       
     </style>
 </head>
 <body>
-    
+    <div id="header-container"></div>
     <script>
-<<<<<<< HEAD
-        
-=======
         document.addEventListener("DOMContentLoaded", function() {
             fetch('header.html')
                 .then(response => response.text())
@@ -90,7 +87,6 @@
 
         // Load favourites when the page is ready
         window.onload = loadFavourites;
->>>>>>> b95ea8a097ed2a871ea6b5cf1b4c19786a60ffbd
     </script>
 </body>
 </html>
