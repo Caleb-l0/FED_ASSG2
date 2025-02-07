@@ -3,412 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MokeSell - Home</title>
+    <title>Listings - EasyElectronics</title>
     <link rel="stylesheet" href="style.css">
+    <script src="js/login.js" defer></script>
+    <script>
+        const API_KEY = "67a60e04f59921a39048b97f";
+        const DB_NAME = "testing-80a6";
+        // Using a CORS proxy for testing
+        const LISTINGS_URL = `https://mokesell-3ddd.restdb.io/rest/listings`;
+        
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        let totalCost = 0;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                });
+
+            // Check if user is already logged in
+            const username = localStorage.getItem("username");
+            console.log("Logged in username:", username);
+            if (username) {
+                document.getElementById("user-info").innerText = "Logged in as: " + username;
+                document.getElementById("login-section").style.display = "none";
+                document.getElementById("listing-form").style.display = "block";
+                loadListings();  // Only load listings if logged in
+            } else {
+                document.getElementById("login-section").style.display = "block";
+            }
+
+            // Login button event
+            document.getElementById("login-btn").addEventListener("click", function() {
+                const usernameInput = document.getElementById("username").value.trim();
+                if (usernameInput) {
+                    localStorage.setItem("username", usernameInput);
+                    document.getElementById("user-info").innerText = "Logged in as: " + usernameInput;
+                    document.getElementById("login-section").style.display = "none";
+                    document.getElementById("listing-form").style.display = "block";
+                    loadListings();  // Load listings after successful login
+                } else {
+                    alert("Please enter a valid username.");
+                }
+            });
+
+            // Submit listing form event
+            document.getElementById("listing-form").addEventListener("submit", async function(e) {
+                e.preventDefault();
+                const name = document.getElementById("name").value;
+                const price = parseFloat(document.getElementById("price").value);
+                const image = document.getElementById("image").value;
+
+                if (!name || isNaN(price)) {
+                    alert("Name and valid Price are required!");
+                    return;
+                }
+
+                const listing = {
+                    name: name,
+                    price: price,
+                    image: image,
+                    user: localStorage.getItem("username")
+                };
+
+                await postListing(listing);
+                loadListings();  // Reload listings after posting
+                e.target.reset();
+            });
+        });
+
+        // Function to load listings
+        async function loadListings() {
+            try {
+                const response = await fetch(LISTINGS_URL, {
+                    headers: { "x-apikey": API_KEY }
+                });
+                const listings = await response.json();
+
+                const userListings = listings.filter(function(listing) {
+                    return listing.user === localStorage.getItem("username");
+                });
+
+                displayListings(userListings);
+            } catch (error) {
+                console.error("Error loading listings:", error);
+            }
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+        // Function to display listings
+        function displayListings(listings) {
+            const container = document.getElementById("listings-container");
+            container.innerHTML = "";
+            listings.forEach(function(listing) {
+                const itemCard = createItemCard(listing.name, listing.price, listing.image, listing._id);  // Include listing ID for delete
+                container.appendChild(itemCard);
+            });
         }
 
-        .slider-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            margin: 20px 0;
+        // Function to post a new listing
+        async function postListing(listing) {
+            try {
+                const response = await fetch(LISTINGS_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-apikey": API_KEY
+                    },
+                    body: JSON.stringify(listing)
+                });
+
+                if (!response.ok) {
+                    const errorDetails = await response.json();
+                    throw new Error("Failed to post listing: " + response.statusText + ", Details: " + JSON.stringify(errorDetails));
+                }
+            } catch (error) {
+                console.error("Error posting listing:", error);
+            }
         }
 
-        .slider {
-            width: 750px;
-            height: 250px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+        // Function to handle 'Buy Now' functionality
+        function handleBuyNow(productName, productPrice) {
+            totalCost += parseFloat(productPrice);
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({ name: productName, price: parseFloat(productPrice) });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert("You have added " + productName + " to your cart. Total cost: $" + totalCost.toFixed(2));
         }
 
-        .slider img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
+        // Function to create an item card
+        function createItemCard(name, price, image, listingId) {
+            const itemCard = document.createElement('div');
+            itemCard.classList.add('product-card');
+            itemCard.style.position = 'relative'; 
+
+            const itemImage = document.createElement('img');
+            itemImage.src = image;
+            itemImage.alt = name;
+            itemImage.classList.add('product-image');
+
+            const itemName = document.createElement('h3');
+            itemName.textContent = name;
+
+            const itemPrice = document.createElement('p');
+            itemPrice.classList.add('price');
+            itemPrice.textContent = `$${price}`;
+
+            const buyNowButton = document.createElement('button');
+            buyNowButton.classList.add('buy-now-btn');
+            buyNowButton.textContent = 'Buy Now';
+            buyNowButton.addEventListener('click', function() {
+                handleBuyNow(name, price);
+            });
+
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('delete-btn');
+            deleteButton.textContent = 'X';
+            deleteButton.addEventListener('click', function() {
+                deleteListing(listingId);
+            });
+
+            itemCard.appendChild(deleteButton);  
+            itemCard.appendChild(itemImage);
+            itemCard.appendChild(itemName);
+            itemCard.appendChild(itemPrice);
+            itemCard.appendChild(buyNowButton);
+
+            return itemCard;
         }
 
-        .slider img.active {
-            display: block;
+        // Function to delete a listing
+        async function deleteListing(listingId) {
+            try {
+                const response = await fetch(`${LISTINGS_URL}/${listingId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "x-apikey": API_KEY
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorDetails = await response.json();
+                    throw new Error("Failed to delete listing: " + response.statusText + ", Details: " + JSON.stringify(errorDetails));
+                }
+
+                alert("Listing deleted successfully!");
+                loadListings(); // Reload listings after deleting
+            } catch (error) {
+                console.error("Error deleting listing:", error);
+            }
         }
-
-        .slider-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            font-size: 18px;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-        }
-
-        .slider-btn:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
-        .prev {
-            left: 120px;
-        }
-
-        .next {
-            right: 120px;
-        }
-
-        .product-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        .product-list {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            padding: 20px 0;
-            width: 80%;
-            scrollbar-width: none;
-        }
-
-        .product-list::-webkit-scrollbar {
-            display: none; 
-        }
-
-        .product-card {
-            background-color: white;
-            padding: 1rem;
-            min-width: 250px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .product-card img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-
-        .product-card h3 {
-            font-size: 1.2rem;
-            margin: 10px 0;
-        }
-
-        .product-card .price {
-            font-weight: bold;
-            color: #e74c3c;
-        }
-
-        .scroll-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            font-size: 18px;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            z-index: 1; 
-        }
-
-        .scroll-btn:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
-        .scroll-left {
-            left: 55px;
-        }
-
-        .scroll-right {
-            right: 55px;
-        }
-
-        .heart {
-    cursor: pointer;
-    width: 10px; /* Set desired width */
-    height: 10px; /* Set desired height */
-    transition: transform 0.2s ease; /* Optional: adds smooth transition effect */
-}
-
-.heart:hover {
-    transform: scale(1.1); /* Optional: slightly enlarges the heart on hover */
-}
-
-    </style>
+    </script>
 </head>
 <body>
 
     <div id="header-container"></div>
-    <script>
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-            function handleBuyNow(productName, productPrice) {
-        alert("You have selected: " + productName + " for $" + productPrice);}
 
-        let totalCost = 0;
+    <section id="listings-section">
+        <h2>Listings</h2>
+        <div id="user-info"></div>
 
-function handleBuyNow(productName, productCost) {
-    totalCost += productCost;
-
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    cart.push({ name: productName, price: productCost });
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-
-    alert("You have added " + productName + " to your cart. Total cost: $" + totalCost);
-}
-    </script>
-
-    <div class="slider-container">
-        <button class="slider-btn prev" onclick="changeSlide(-1)">‹</button>
-        <div class="slider">
-            <img src="https://img.freepik.com/free-vector/valentines-day-sale-paper-style_23-2148805124.jpg" class="active" alt="Slide 1">
-            <img src="https://www.kele.sg/cdn/shop/articles/MAIN_PAGE_desktop.png?v=1730250937" alt="Slide 2">
+        <div id="login-section">
+            <input type="text" id="username" placeholder="Enter Username" required>
+            <button id="login-btn">Login</button>
         </div>
-        <button class="slider-btn next" onclick="changeSlide(1)">›</button>
-    </div>
 
-    <div class="product-container">
-        <button class="scroll-btn scroll-left" onclick="scrollLeft('product-list-1')">‹</button>
-        
-        <div class="product-list" id="product-list-1">
-        </div>
-        
-        <button class="scroll-btn scroll-right" onclick="scrollRight('product-list-1')">›</button>
-    </div>
+        <form id="listing-form" style="display:none;">
+            <input type="text" id="name" placeholder="Item Name" required>
+            <input type="number" id="price" placeholder="Price" required>
+            <input type="text" id="image" placeholder="Image URL">
+            <button type="submit">Post Listing</button>
+        </form>
 
-    <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slider img');
-
-        function changeSlide(direction) {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + direction + slides.length) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }
-
-        function autoChangeSlide() {
-            changeSlide(1);
-        }
-
-        setInterval(autoChangeSlide, 10000); // Change slide every 10 seconds
-
-        const products = [
-            { name: 'Laptop', price: '$999', image: 'https://via.placeholder.com/300x200?text=Laptop' },
-            { name: 'T-Shirt', price: '$20', image: 'https://via.placeholder.com/300x200?text=T-Shirt' },
-            { name: 'Sofa', price: '$500', image: 'https://via.placeholder.com/300x200?text=Sofa' },
-            { name: 'Basketball', price: '$30', image: 'https://via.placeholder.com/300x200?text=Basketball' },
-            { name: 'Smartphone', price: '$799', image: 'https://via.placeholder.com/300x200?text=Smartphone' },
-            { name: 'Jacket', price: '$100', image: 'https://via.placeholder.com/300x200?text=Jacket' }
-        ];
-
-        function insertProducts(listId) {
-            const productList = document.getElementById(listId);
-            products.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.classList.add('product-card');
-                productCard.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}">
-                    <h3>${product.name}</h3>
-                    <span class="price">${product.price}</span>
-                `;
-                productList.appendChild(productCard);
-            });
-        }
-
-        insertProducts('product-list-1');
-
-        function scrollLeft(listId) {
-            const productList = document.getElementById(listId);
-            productList.scrollLeft -= 280;
-        }
-
-        function scrollRight(listId) {
-            const productList = document.getElementById(listId);
-            productList.scrollLeft += 280; 
-        }
-
-        
-        function toggleLike(heartImage) {
-    const productName = heartImage.getAttribute('data-product');
-    let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
-
-    if (favourites.includes(productName)) {
-        // If already liked, unlike it
-        heartImage.src = 'https://img.icons8.com/?size=100&id=85038&format=png&color=FA5252'; // Unfilled heart
-        favourites = favourites.filter(item => item !== productName);
-    } else {
-        // If not liked, like it
-        heartImage.src = 'https://img.icons8.com/?size=100&id=84881&format=png&color=FA5252'; // Filled heart
-        favourites.push(productName);
-    }
-
-    // Save updated list
-    localStorage.setItem('favourites', JSON.stringify(favourites));
-}
-
-// On page load, restore heart states
-window.onload = function() {
-    const heartIcons = document.querySelectorAll('.heart');
-    let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
-
-    heartIcons.forEach(heart => {
-        const productName = heart.getAttribute('data-product');
-        if (favourites.includes(productName)) {
-            heart.src = 'https://img.icons8.com/?size=100&id=84881&format=png&color=FA5252'; // Filled heart
-        } else {
-            heart.src = 'https://img.icons8.com/?size=100&id=85038&format=png&color=FA5252'; // Unfilled heart
-        }
-    });
-};
-</script>
-
-    </script>
-
-<section class="featured-items">
-    <h2 id="headphones" data-category="Headphones">Headphones</h2>
-    <div class="product-grid">
-        <div class="product-card" data-name="Apple AirPods Max Silver Black Pink" data-price="918" data-category="Headphones">
-            <img src="https://metapod.com/cdn/shop/files/AppleAirPodsMaxHeadphones_Blue_1.png?v=1731646649&width=800" alt="Headphone 1">
-            <h3>Apple AirPods Max Silver Black Pink</h3>
-            <p class="price">$918</p>
-            <img src="https://img.icons8.com/?size=100&id=85038&format=png&color=FA5252" alt="Like" class="heart" data-product="Apple AirPods Max Silver Black Pink"   onclick="toggleLike(this)">
-        
-        </div>
-        <div class="product-card" data-name="Sony WH-CH520 Wireless Bluetooth Headphones" data-price="139" data-category="Headphones">
-            <img src="https://images.ctfassets.net/8cd2csgvqd3m/26XtRwxmomi69pWKqcuyS8/3a5285a2e0b4a5cb29484bcbe0763258/Packshot-Beoplay-H95-Gold-Tone-0006-Perspective-1200x1200px.png?q=90&fm=webp&w=1200&h=1200&fit=fill" alt="Headphone 2">
-            <h3>Sony WH-CH520 Wireless Bluetooth Headphones</h3>
-            <p class="price">$139</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Sony WH-CH520 Wireless Bluetooth Headphones', 139)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="Airpods 3 Lightning" data-price="36" data-category="Headphones">
-            <img src="https://m.media-amazon.com/images/I/51oc-XVy47L.__AC_SX300_SY300_QL70_ML2_.jpg" alt="Headphone 3">
-            <h3>Airpods 3 Lightning</h3>
-            <p class="price">$36</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Airpods 3 Lightning', 36)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="SAMSUNG Galaxy Buds 3" data-price="289" data-category="Headphones">
-            <img src="https://m.media-amazon.com/images/I/61DWCJmKe7L.__AC_SX300_SY300_QL70_ML2_.jpg" alt="Headphone 4">
-            <h3>SAMSUNG Galaxy Buds 3</h3>
-            <p class="price">$289</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('SAMSUNG Galaxy Buds 3', 289)">Buy Now</button>
-        </div>
-    </div>
-
-    <h2 id="chargers" data-category="Chargers">Chargers</h2>
-    <div class="product-grid">
-        <div class="product-card" data-name="61W 87W 96W 140W USB-C Power Adapter Type-C Charger for Apple Macbook Air Pro" data-price="100" data-category="Chargers">
-            <img src="https://i.ebayimg.com/images/g/hcMAAOSwZnlkQQXV/s-l960.webp" alt="Charger 1">
-            <h3>61W 87W 96W 140W USB-C Power Adapter Type-C Charger for Apple Macbook Air Pro</h3>
-            <p class="price">$100</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('61W 87W 96W 140W USB-C Power Adapter Type-C Charger for Apple Macbook Air Pro', 100)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="HP 19.5v 3.33a 65w 4.5*3.0mm power adapter charger" data-price="29" data-category="Chargers">
-            <img src="https://down-sg.img.susercontent.com/file/fed586fee82e226e09ba1455c984e618.webp" alt="Charger 2">
-            <h3>HP 19.5v 3.33a 65w 4.5*3.0mm power adapter charger</h3>
-            <p class="price">$29</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('HP 19.5v 3.33a 65w 4.5*3.0mm power adapter charger', 29)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="20W Fast Charging Power Adapter PD Type C Charger Block" data-price="11" data-category="Chargers">
-            <img src="https://i.ebayimg.com/images/g/QEsAAOSwXExhowgE/s-l960.webp" alt="Charger 3">
-            <h3>20W Fast Charging Power Adapter PD Type C Charger Block</h3>
-            <p class="price">$11</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('20W Fast Charging Power Adapter PD Type C Charger Block', 11)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="Samsung Charger Super Fast Charging 25W USB C Wall Charger Block with Type C" data-price="13" data-category="Chargers">
-            <img src="https://i.ebayimg.com/images/g/BCcAAOSwHxdm2aMU/s-l960.webp" alt="Charger 4">
-            <h3>Samsung Charger Super Fast Charging 25W USB C Wall Charger Block with Type C</h3>
-            <p class="price">$13</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Samsung Charger Super Fast Charging 25W USB C Wall Charger Block with Type C', 13)">Buy Now</button>
-        </div>
-    </div>
-
-    <h2 id="cases" data-category="Cases">Cases</h2>
-    <div class="product-grid">
-        <div class="product-card" data-name="IBENZER MacBook glitter case with keyboard cover" data-price="30" data-category="Cases">
-            <img src="https://static.wixstatic.com/media/ebb054_a7a291bd11fd45c5942c40be7eef0a4e~mv2.jpg/v1/fill/w_335,h_335,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ebb054_a7a291bd11fd45c5942c40be7eef0a4e~mv2.jpg" alt="Case 1">
-            <h3>IBENZER MacBook glitter case with keyboard cover</h3>
-            <p class="price">$30</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('IBENZER MacBook glitter case with keyboard cover', 30)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="mCover Case for Microsoft Surface Laptop Windows PC" data-price="43" data-category="Cases">
-            <img src="https://m.media-amazon.com/images/I/51zPqDKBi0L._AC_SL1500_.jpg" alt="Case 2">
-            <h3>mCover Case for Microsoft Surface Laptop Windows PC</h3>
-            <p class="price">$43</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('mCover Case for Microsoft Surface Laptop Windows PC', 43)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="Shockproof iPhone Bumper Cover, Anti-Scratch Clear Back" data-price="10" data-category="Cases">
-            <img src="https://m.media-amazon.com/images/I/61VOapslcsL._AC_SX679_.jpg" alt="Case 3">
-            <h3>Shockproof iPhone Bumper Cover, Anti-Scratch Clear Back</h3>
-            <p class="price">$10</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Shockproof iPhone Bumper Cover, Anti-Scratch Clear Back', 10)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="Samsung Galaxy Case: Clear with 2pcs Screen Protector Reinforced Corners" data-price="15" data-category="Cases">
-            <img src="https://m.media-amazon.com/images/I/71HI-jE0a4L.jpg" alt="Case 4">
-            <h3>Samsung Galaxy Case: Clear with 2pcs Screen Protector Reinforced Corners</h3>
-            <p class="price">$15</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Samsung Galaxy Case: Clear with 2pcs Screen Protector Reinforced Corners', 15)">Buy Now</button>
-        </div>
-    </div>
-</section>
-    <h2 id="other-accessories" data-category="Other Accessories">Other Accessories</h2>
-    <div class="product-grid">
-        <div class="product-card" data-name="APPLE HOMEPOD WHITE MQJ83PA" data-price="399" data-category="Other Accessories">
-            <img src="https://www.gaincity.com/media/catalog/product/cache/6c6c50d4c233a553cee4f0d7353c6a74/s/e/sea_homepod_pdp_image_position-3_1.jpg" alt="Accessory 1">
-            <h3>APPLE HOMEPOD WHITE MQJ83PA</h3>
-            <p class="price">$399</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('APPLE HOMEPOD WHITE MQJ83PA', 399)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="Logitech Z407 40 W Anthracite Wired & Wireless Z407" data-price="118" data-category="Other Accessories">
-            <img src="https://m.media-amazon.com/images/I/61srIgX9KYL._AC_SX679_.jpg" alt="Accessory 2">
-            <h3>Logitech Z407 40 W Anthracite Wired & Wireless Z407</h3>
-            <p class="price">$118</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Logitech Z407 40 W Anthracite Wired & Wireless Z407', 118)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="Magic Mouse (USB‑C) - White Multi-Touch Surface" data-price="99" data-category="Other Accessories">
-            <img src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/MXK53?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1730508286345" alt="Accessory 3">
-            <h3>Magic Mouse (USB‑C) - White Multi-Touch Surface</h3>
-            <p class="price">$99</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Magic Mouse (USB‑C) - White Multi-Touch Surface', 99)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="HP Wireless Mouse, Z3700, Quiet, Dual Wireless Mouse" data-price="15" data-category="Other Accessories">
-            <img src="https://m.media-amazon.com/images/I/61qtfg+W4NL._AC_SX679_.jpg" alt="Accessory 4">
-            <h3>HP Wireless Mouse, Z3700, Quiet, Dual Wireless Mouse</h3>
-            <p class="price">$15</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('HP Wireless Mouse, Z3700, Quiet, Dual Wireless Mouse', 15)">Buy Now</button>
-        </div>
-    </div>
-
-</section>
+        <section id="listings-container" class="product-grid"></section>
+    </section>
 
 </body>
 </html>
