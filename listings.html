@@ -65,19 +65,6 @@
                 loadListings();
                 e.target.reset();
             });
-
-            document.getElementById("add-item-btn").addEventListener('click', function() {
-                const itemName = prompt('Enter item name:');
-                const itemPrice = prompt('Enter item price:');
-                const itemImage = prompt('Enter item image URL:');
-
-                if (itemName && itemPrice && itemImage) {
-                    const newItem = createItemCard(itemName, itemPrice, itemImage);
-                    document.getElementById('listings-container').appendChild(newItem);
-                } else {
-                    alert('All fields are required!');
-                }
-            });
         });
 
         async function loadListings() {
@@ -101,7 +88,7 @@
             const container = document.getElementById("listings-container");
             container.innerHTML = "";
             listings.forEach(function(listing) {
-                const itemCard = createItemCard(listing.name, listing.price, listing.image);
+                const itemCard = createItemCard(listing.name, listing.price, listing.image, listing._id);  // Include listing ID for delete
                 container.appendChild(itemCard);
             });
         }
@@ -134,9 +121,10 @@
             alert("You have added " + productName + " to your cart. Total cost: $" + totalCost.toFixed(2));
         }
 
-        function createItemCard(name, price, image) {
+        function createItemCard(name, price, image, listingId) {
             const itemCard = document.createElement('div');
             itemCard.classList.add('product-card');
+            itemCard.style.position = 'relative'; 
 
             const itemImage = document.createElement('img');
             itemImage.src = image;
@@ -157,12 +145,41 @@
                 handleBuyNow(name, price);
             });
 
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('delete-btn');
+            deleteButton.textContent = 'X';
+            deleteButton.addEventListener('click', function() {
+                deleteListing(listingId);
+            });
+
+            itemCard.appendChild(deleteButton);  
             itemCard.appendChild(itemImage);
             itemCard.appendChild(itemName);
             itemCard.appendChild(itemPrice);
             itemCard.appendChild(buyNowButton);
 
             return itemCard;
+        }
+
+        async function deleteListing(listingId) {
+            try {
+                const response = await fetch(`${LISTINGS_URL}/${listingId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "x-apikey": API_KEY
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorDetails = await response.json();
+                    throw new Error("Failed to delete listing: " + response.statusText + ", Details: " + JSON.stringify(errorDetails));
+                }
+
+                alert("Listing deleted successfully!");
+                loadListings(); 
+            } catch (error) {
+                console.error("Error deleting listing:", error);
+            }
         }
     </script>
 </head>
@@ -188,10 +205,6 @@
 
         <section id="listings-container" class="product-grid"></section>
     </section>
-
-    <button id="add-item-btn" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
-        Add Item
-    </button>
 
 </body>
 </html>
