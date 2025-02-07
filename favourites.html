@@ -21,7 +21,76 @@
 <body>
     
     <script>
+<<<<<<< HEAD
         
+=======
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading header:', error));
+        });
+    </script>
+   
+
+    <h1>Favourites</h1>
+
+    <div id="favourites-list">
+        <!-- Favourites will be populated here -->
+    </div>
+
+    <script>
+       
+       document.addEventListener("DOMContentLoaded", function() {
+            fetch('header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading header:', error));
+        });
+
+        // Function to load favourites and display them with remove buttons
+        function loadFavourites() {
+            const favouritesList = document.getElementById('favourites-list');
+            favouritesList.innerHTML = ''; // Clear existing list
+            let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+
+            if (favourites.length > 0) {
+                favourites.forEach((product, index) => {
+                    const productDiv = document.createElement('div');
+                    productDiv.classList.add('favourite-item');
+                    productDiv.innerHTML = `
+                        <span class="favourite-name">${product}</span>
+                        <button class="remove-btn" onclick="removeFromFavourites(${index})">Remove</button>
+                    `;
+                    favouritesList.appendChild(productDiv);
+                });
+            } else {
+                favouritesList.innerHTML = '<p>No favourites yet.</p>';
+            }
+        }
+
+        // Function to remove an item from favourites
+        function removeFromFavourites(index) {
+    let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+    const removedItem = favourites[index]; // Store removed item
+    favourites.splice(index, 1); // Remove from array
+    localStorage.setItem('favourites', JSON.stringify(favourites));
+
+    // Reset the heart icon in index.html
+    let likedProducts = JSON.parse(localStorage.getItem('likedProducts')) || {};
+    delete likedProducts[removedItem]; // Remove from liked list
+    localStorage.setItem('likedProducts', JSON.stringify(likedProducts));
+
+    loadFavourites(); // Refresh the list
+}
+
+        // Load favourites when the page is ready
+        window.onload = loadFavourites;
+>>>>>>> b95ea8a097ed2a871ea6b5cf1b4c19786a60ffbd
     </script>
 </body>
 </html>
