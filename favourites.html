@@ -20,17 +20,6 @@
 </head>
 <body>
     <div id="header-container"></div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('header.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-container').innerHTML = data;
-                })
-                .catch(error => console.error('Error loading header:', error));
-        });
-    </script>
-   
 
     <h1>Favourites</h1>
 
@@ -39,14 +28,16 @@
     </div>
 
     <script>
-       
-       document.addEventListener("DOMContentLoaded", function() {
+        // Load header once the page content is loaded
+        document.addEventListener("DOMContentLoaded", function() {
             fetch('header.html')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('header-container').innerHTML = data;
                 })
                 .catch(error => console.error('Error loading header:', error));
+
+            loadFavourites(); // Load favourites after header is loaded
         });
 
         // Function to load favourites and display them with remove buttons
@@ -72,21 +63,18 @@
 
         // Function to remove an item from favourites
         function removeFromFavourites(index) {
-    let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
-    const removedItem = favourites[index]; // Store removed item
-    favourites.splice(index, 1); // Remove from array
-    localStorage.setItem('favourites', JSON.stringify(favourites));
+            let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+            const removedItem = favourites[index]; // Store removed item
+            favourites.splice(index, 1); // Remove from array
+            localStorage.setItem('favourites', JSON.stringify(favourites));
 
-    // Reset the heart icon in index.html
-    let likedProducts = JSON.parse(localStorage.getItem('likedProducts')) || {};
-    delete likedProducts[removedItem]; // Remove from liked list
-    localStorage.setItem('likedProducts', JSON.stringify(likedProducts));
+            // Reset the heart icon in index.html (assuming this is part of the functionality)
+            let likedProducts = JSON.parse(localStorage.getItem('likedProducts')) || {};
+            delete likedProducts[removedItem]; // Remove from liked list
+            localStorage.setItem('likedProducts', JSON.stringify(likedProducts));
 
-    loadFavourites(); // Refresh the list
-}
-
-        // Load favourites when the page is ready
-        window.onload = loadFavourites;
+            loadFavourites(); // Refresh the list
+        }
     </script>
 </body>
 </html>
