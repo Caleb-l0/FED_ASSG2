@@ -9,7 +9,9 @@
     <script>
         const API_KEY = "678d1a12d31b8aa52a620cdc";
         const DB_NAME = "testing-80a6";
-        const LISTINGS_URL = `https://${DB_NAME}.restdb.io/rest/listings`;
+        // Using a CORS proxy for testing
+        const LISTINGS_URL = `https://cors-anywhere.herokuapp.com/https://${DB_NAME}.restdb.io/rest/listings`;
+        
 
         let totalCost = 0;
 
@@ -20,16 +22,19 @@
                     document.getElementById('header-container').innerHTML = data;
                 });
 
+            // Check if user is already logged in
             const username = localStorage.getItem("username");
+            console.log("Logged in username:", username);
             if (username) {
                 document.getElementById("user-info").innerText = "Logged in as: " + username;
                 document.getElementById("login-section").style.display = "none";
                 document.getElementById("listing-form").style.display = "block";
-                loadListings();
+                loadListings();  // Only load listings if logged in
             } else {
                 document.getElementById("login-section").style.display = "block";
             }
 
+            // Login button event
             document.getElementById("login-btn").addEventListener("click", function() {
                 const usernameInput = document.getElementById("username").value.trim();
                 if (usernameInput) {
@@ -37,12 +42,13 @@
                     document.getElementById("user-info").innerText = "Logged in as: " + usernameInput;
                     document.getElementById("login-section").style.display = "none";
                     document.getElementById("listing-form").style.display = "block";
-                    loadListings();
+                    loadListings();  // Load listings after successful login
                 } else {
                     alert("Please enter a valid username.");
                 }
             });
 
+            // Submit listing form event
             document.getElementById("listing-form").addEventListener("submit", async function(e) {
                 e.preventDefault();
                 const name = document.getElementById("name").value;
@@ -62,11 +68,12 @@
                 };
 
                 await postListing(listing);
-                loadListings();
+                loadListings();  // Reload listings after posting
                 e.target.reset();
             });
         });
 
+        // Function to load listings
         async function loadListings() {
             try {
                 const response = await fetch(LISTINGS_URL, {
@@ -84,6 +91,7 @@
             }
         }
 
+        // Function to display listings
         function displayListings(listings) {
             const container = document.getElementById("listings-container");
             container.innerHTML = "";
@@ -93,6 +101,7 @@
             });
         }
 
+        // Function to post a new listing
         async function postListing(listing) {
             try {
                 const response = await fetch(LISTINGS_URL, {
@@ -113,6 +122,7 @@
             }
         }
 
+        // Function to handle 'Buy Now' functionality
         function handleBuyNow(productName, productPrice) {
             totalCost += parseFloat(productPrice);
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -121,6 +131,7 @@
             alert("You have added " + productName + " to your cart. Total cost: $" + totalCost.toFixed(2));
         }
 
+        // Function to create an item card
         function createItemCard(name, price, image, listingId) {
             const itemCard = document.createElement('div');
             itemCard.classList.add('product-card');
@@ -161,6 +172,7 @@
             return itemCard;
         }
 
+        // Function to delete a listing
         async function deleteListing(listingId) {
             try {
                 const response = await fetch(`${LISTINGS_URL}/${listingId}`, {
@@ -176,7 +188,7 @@
                 }
 
                 alert("Listing deleted successfully!");
-                loadListings(); 
+                loadListings(); // Reload listings after deleting
             } catch (error) {
                 console.error("Error deleting listing:", error);
             }
