@@ -155,14 +155,14 @@
                 const row = document.createElement('tr');
                 grandTotal += item.price; 
 
-                row.innerHTML = `
+                row.innerHTML = 
                     <td>${item.name}</td>
                     <td>$${item.price.toFixed(2)}</td>
-                `;
+                ;
                 cartTableBody.appendChild(row);
             });
 
-            grandTotalElement.textContent = `$${grandTotal.toFixed(2)}`;
+            grandTotalElement.textContent = $${grandTotal.toFixed(2)};
         }
 
         function checkout() {
@@ -171,7 +171,7 @@
     cart.forEach(item => {
         grandTotal += item.price;
     });
-    alert(`Your total is $${grandTotal.toFixed(2)}`);
+    alert(Your total is $${grandTotal.toFixed(2)});
 
     localStorage.removeItem('cart');  
     cart.length = 0; 
