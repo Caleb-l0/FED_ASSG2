@@ -113,7 +113,7 @@ if (!username) {
     window.location.href = 'login.html'; // Redirect to login if no username is provided
 } else {
     // Fetch user data from RESTdb based on username
-    fetch(${apiUrl}?q={"username":"${decodeURIComponent(username)}"}, {
+    fetch('${apiUrl}?q={"username":"${decodeURIComponent(username)}"}', {
         method: 'GET',
         headers: {
             'x-apikey': apiKey
@@ -137,7 +137,7 @@ if (!username) {
             const profilePic = user.pfp || '';  // Replace with your actual field name
             const profilePicElement = document.getElementById('profile-pic');
             if (profilePic) {
-                profilePicElement.innerHTML = <img src="${profilePic}" alt="Profile Picture">;
+                profilePicElement.innerHTML = '<img src="${profilePic}" alt="Profile Picture">';
             }
         } else {
             alert('User not found');
@@ -157,5 +157,5 @@ if (!username) {
 
     </div>
 
-    </body>
+    </body>
 </html>
