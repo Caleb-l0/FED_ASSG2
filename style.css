@@ -674,3 +674,71 @@ h2 {
     background-color: #f44336;
     color: white;
 }
+.heart {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-color: transparent;
+    position: absolute;
+    bottom: 23  px; 
+    left: 30px;
+    cursor: pointer;
+    font-size: 24px;
+    color: gray; /* Default unlit color */
+    transition: transform 0.2s ease;
+}
+
+.heart::before,
+.heart::after {
+    content: "";
+    width: 10px;
+    height: 16px;
+    background-color: pink;
+    border-radius: 10px 10px 0 0;
+    position: absolute;
+    top: 0;
+    left: 4px;
+    transform: rotate(45deg);
+}
+
+.heart::after {
+    left: 0;
+    transform: rotate(-45deg);
+}
+
+.heart.liked {
+    color: pink; /* Lit (favorite) color */
+}
+
+.heart.liked::before,
+.heart.liked::after {
+    background-color: red;
+}
+
+.heart:hover {
+    transform: scale(1.1);
+}
+
+.product-card {
+    position: relative;
+    background-color: white;
+    padding: 1rem;
+    min-width: 250px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.buy-now-btn {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.buy-now-btn:hover {
+    background-color: #c0392b;
+}
