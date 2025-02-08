@@ -6,15 +6,40 @@
     <title>Favourites</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .favourite-item {
-            padding: 10px;
+        .product-card {
+            width: 200px;
+            padding: 15px;
             border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            margin-bottom: 10px;
+            background-color: #fff;
+            margin: 10px;
+            text-align: center;
         }
 
-        .favourite-name {
-            margin-left: 10px;
+        .product-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product-card h3 {
+            margin: 10px 0;
+        }
+
+        .product-card .price {
+            color: green;
+            font-weight: bold;
+        }
+
+        .remove-btn {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background-color: darkred;
         }
     </style>
 </head>
@@ -30,62 +55,44 @@
                 .catch(error => console.error('Error loading header:', error));
         });
     </script>
-   
 
     <h1>Favourites</h1>
 
-    <div id="favourites-list">
-        <!-- Favourites will be populated here -->
-    </div>
+    <div id="favourite-list" class="product-grid"></div>
 
     <script>
-       
-       document.addEventListener("DOMContentLoaded", function() {
-            fetch('header.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-container').innerHTML = data;
-                })
-                .catch(error => console.error('Error loading header:', error));
-        });
-
-        // Function to load favourites and display them with remove buttons
         function loadFavourites() {
-            const favouritesList = document.getElementById('favourites-list');
-            favouritesList.innerHTML = ''; // Clear existing list
-            let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+            const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+            const container = document.getElementById('favourite-list');
+            container.innerHTML = '';
 
-            if (favourites.length > 0) {
-                favourites.forEach((product, index) => {
-                    const productDiv = document.createElement('div');
-                    productDiv.classList.add('favourite-item');
-                    productDiv.innerHTML = `
-                        <span class="favourite-name">${product}</span>
-                        <button class="remove-btn" onclick="removeFromFavourites(${index})">Remove</button>
-                    `;
-                    favouritesList.appendChild(productDiv);
-                });
-            } else {
-                favouritesList.innerHTML = '<p>No favourites yet.</p>';
+            if (favourites.length === 0) {
+                container.innerHTML = '<p>No favourite items yet.</p>';
+                return;
             }
+
+            favourites.forEach((item, index) => {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+                productCard.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <h3>${item.name}</h3>
+                    <p class="price">$${item.price}</p>
+                    <button class="remove-btn" onclick="removeFromFavourites(${index})">Remove</button>
+                `;
+                container.appendChild(productCard);
+            });
         }
 
         // Function to remove an item from favourites
         function removeFromFavourites(index) {
-    let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
-    const removedItem = favourites[index]; // Store removed item
-    favourites.splice(index, 1); // Remove from array
-    localStorage.setItem('favourites', JSON.stringify(favourites));
+            let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+            favourites.splice(index, 1); // Remove item from array
+            localStorage.setItem('favourites', JSON.stringify(favourites));
 
-    // Reset the heart icon in index.html
-    let likedProducts = JSON.parse(localStorage.getItem('likedProducts')) || {};
-    delete likedProducts[removedItem]; // Remove from liked list
-    localStorage.setItem('likedProducts', JSON.stringify(likedProducts));
+            loadFavourites(); // Refresh the list after removal
+        }
 
-    loadFavourites(); // Refresh the list
-}
-
-        // Load favourites when the page is ready
         window.onload = loadFavourites;
     </script>
 </body>

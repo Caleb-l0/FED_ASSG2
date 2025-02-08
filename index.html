@@ -148,12 +148,6 @@
             right: 55px;
         }
 
-        .heart {
-    cursor: pointer;
-    width: 10px; /* Set desired width */
-    height: 10px; /* Set desired height */
-    transition: transform 0.2s ease; /* Optional: adds smooth transition effect */
-}
 
 .heart:hover {
     transform: scale(1.1); /* Optional: slightly enlarges the heart on hover */
@@ -258,157 +252,195 @@ function handleBuyNow(productName, productCost) {
         }
 
         
-        function toggleLike(heartImage) {
-    const productName = heartImage.getAttribute('data-product');
+        function toggleLike(heartElement) {
     let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+    const productCard = heartElement.closest('.product-card');
+    
+    const productName = productCard.getAttribute('data-name');
+    const productPrice = productCard.getAttribute('data-price');
+    const productImage = productCard.querySelector('img').src;
 
-    if (favourites.includes(productName)) {
-        // If already liked, unlike it
-        heartImage.src = 'https://img.icons8.com/?size=100&id=85038&format=png&color=FA5252'; // Unfilled heart
-        favourites = favourites.filter(item => item !== productName);
+    const existingIndex = favourites.findIndex(item => item.name === productName);
+
+    if (existingIndex !== -1) {
+        // Remove item if already in favourites
+        favourites.splice(existingIndex, 1);
+        heartElement.classList.remove("liked");
     } else {
-        // If not liked, like it
-        heartImage.src = 'https://img.icons8.com/?size=100&id=84881&format=png&color=FA5252'; // Filled heart
-        favourites.push(productName);
+        // Add item if not in favourites
+        favourites.push({ name: productName, price: productPrice, image: productImage });
+        heartElement.classList.add("liked");
     }
 
-    // Save updated list
+    // Save updated favourites list to localStorage
     localStorage.setItem('favourites', JSON.stringify(favourites));
 }
 
-// On page load, restore heart states
+// Restore heart states on page load
 window.onload = function() {
-    const heartIcons = document.querySelectorAll('.heart');
+    const hearts = document.querySelectorAll('.heart');
     let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
 
-    heartIcons.forEach(heart => {
+    // Loop through each heart and check if the product is in the favourites list
+    hearts.forEach(heart => {
         const productName = heart.getAttribute('data-product');
-        if (favourites.includes(productName)) {
-            heart.src = 'https://img.icons8.com/?size=100&id=84881&format=png&color=FA5252'; // Filled heart
+        const isLiked = favourites.some(item => item.name === productName);  // Check if product is in favourites
+
+        if (isLiked) {
+            heart.classList.add("liked");
         } else {
-            heart.src = 'https://img.icons8.com/?size=100&id=85038&format=png&color=FA5252'; // Unfilled heart
+            heart.classList.remove("liked");
         }
     });
 };
+
 </script>
 
     </script>
 
 <section class="featured-items">
-    <h2 id="headphones" data-category="Headphones">Headphones</h2>
-    <div class="product-grid">
-        <div class="product-card" data-name="Apple AirPods Max Silver Black Pink" data-price="918" data-category="Headphones">
-            <img src="https://metapod.com/cdn/shop/files/AppleAirPodsMaxHeadphones_Blue_1.png?v=1731646649&width=800" alt="Headphone 1">
-            <h3>Apple AirPods Max Silver Black Pink</h3>
-            <p class="price">$918</p>
-            <img src="https://img.icons8.com/?size=100&id=85038&format=png&color=FA5252" alt="Like" class="heart" data-product="Apple AirPods Max Silver Black Pink"   onclick="toggleLike(this)">
-        
+        <h2 id="headphones" data-category="Headphones">Headphones</h2>
+        <div class="product-grid">
+            <div class="product-card" data-name="Apple AirPods Max Silver Black Pink" data-price="918" data-category="Headphones">
+                <img src="https://metapod.com/cdn/shop/files/AppleAirPodsMaxHeadphones_Blue_1.png?v=1731646649&width=800" alt="Headphone 1">
+                <h3>Apple AirPods Max Silver Black Pink</h3>
+                <p class="price">$918</p>
+                <div class="heart" data-product="Apple AirPods Max" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('Apple AirPods Max Silver Black Pink', 918)">Buy Now</button>
+            </div>
+            
+            <div class="product-card" data-name="Sony WH-CH520 Wireless Bluetooth Headphones" data-price="139" data-category="Headphones">
+                <img src="https://images.ctfassets.net/8cd2csgvqd3m/26XtRwxmomi69pWKqcuyS8/3a5285a2e0b4a5cb29484bcbe0763258/Packshot-Beoplay-H95-Gold-Tone-0006-Perspective-1200x1200px.png?q=90&fm=webp&w=1200&h=1200&fit=fill" alt="Headphone 2">
+                <h3>Sony WH-CH520 Wireless Bluetooth Headphones</h3>
+                <p class="price">$139</p>
+                <div class="heart" data-product="Sony WH-CH520 Wireless Bluetooth Headphones" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('Sony WH-CH520 Wireless Bluetooth Headphones', 139)">Buy Now</button>
+            </div>
+    
+            <div class="product-card" data-name="Airpods 3 Lightning" data-price="36" data-category="Headphones">
+                <img src="https://m.media-amazon.com/images/I/51oc-XVy47L.__AC_SX300_SY300_QL70_ML2_.jpg" alt="Headphone 3">
+                <h3>Airpods 3 Lightning</h3>
+                <p class="price">$36</p>
+                <div class="heart" data-product="Airpods 3 Lightning" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('Airpods 3 Lightning', 36)">Buy Now</button>
+            </div>
+    
+            <div class="product-card" data-name="SAMSUNG Galaxy Buds 3" data-price="289" data-category="Headphones">
+                <img src="https://m.media-amazon.com/images/I/61DWCJmKe7L.__AC_SX300_SY300_QL70_ML2_.jpg" alt="Headphone 4">
+                <h3>SAMSUNG Galaxy Buds 3</h3>
+                <p class="price">$289</p>
+                <div class="heart" data-product="SAMSUNG Galaxy Buds 3" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('SAMSUNG Galaxy Buds 3', 289)">Buy Now</button>
+            </div>
         </div>
-        <div class="product-card" data-name="Sony WH-CH520 Wireless Bluetooth Headphones" data-price="139" data-category="Headphones">
-            <img src="https://images.ctfassets.net/8cd2csgvqd3m/26XtRwxmomi69pWKqcuyS8/3a5285a2e0b4a5cb29484bcbe0763258/Packshot-Beoplay-H95-Gold-Tone-0006-Perspective-1200x1200px.png?q=90&fm=webp&w=1200&h=1200&fit=fill" alt="Headphone 2">
-            <h3>Sony WH-CH520 Wireless Bluetooth Headphones</h3>
-            <p class="price">$139</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Sony WH-CH520 Wireless Bluetooth Headphones', 139)">Buy Now</button>
+    
+        <h2 id="chargers" data-category="Chargers">Chargers</h2>
+        <div class="product-grid">
+            <div class="product-card" data-name="61W 87W 96W 140W USB-C Power Adapter Type-C Charger for Apple Macbook Air Pro" data-price="100" data-category="Chargers">
+                <img src="https://i.ebayimg.com/images/g/hcMAAOSwZnlkQQXV/s-l960.webp" alt="Charger 1">
+                <h3>61W 87W 96W 140W USB-C Power Adapter Type-C Charger for Apple Macbook Air Pro</h3>
+                <p class="price">$100</p>
+                <div class="heart" data-product="61W 87W 96W 140W USB-C Power Adapter Type-C Charger for Apple Macbook Air Pro" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('61W 87W 96W 140W USB-C Power Adapter Type-C Charger for Apple Macbook Air Pro', 100)">Buy Now</button>
+            </div>
+    
+            <div class="product-card" data-name="HP 19.5v 3.33a 65w 4.5*3.0mm power adapter charger" data-price="29" data-category="Chargers">
+                <img src="https://down-sg.img.susercontent.com/file/fed586fee82e226e09ba1455c984e618.webp" alt="Charger 2">
+                <h3>HP 19.5v 3.33a 65w 4.5*3.0mm power adapter charger</h3>
+                <p class="price">$29</p>
+                <div class="heart" data-product="HP 19.5v 3.33a 65w 4.5*3.0mm power adapter charger" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('HP 19.5v 3.33a 65w 4.5*3.0mm power adapter charger', 29)">Buy Now</button>
+            </div>
+    
+            <div class="product-card" data-name="20W Fast Charging Power Adapter PD Type C Charger Block" data-price="11" data-category="Chargers">
+                <img src="https://i.ebayimg.com/images/g/QEsAAOSwXExhowgE/s-l960.webp" alt="Charger 3">
+                <h3>20W Fast Charging Power Adapter PD Type C Charger Block</h3>
+                <p class="price">$11</p>
+                <div class="heart" data-product="20W Fast Charging Power Adapter PD Type C Charger Block" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('20W Fast Charging Power Adapter PD Type C Charger Block', 11)">Buy Now</button>
+            </div>
+    
+            <div class="product-card" data-name="Samsung Charger Super Fast Charging 25W USB C Wall Charger Block with Type C" data-price="13" data-category="Chargers">
+                <img src="https://i.ebayimg.com/images/g/BCcAAOSwHxdm2aMU/s-l960.webp" alt="Charger 4">
+                <h3>Samsung Charger Super Fast Charging 25W USB C Wall Charger Block with Type C</h3>
+                <p class="price">$13</p>
+                <div class="heart" data-product="Samsung Charger Super Fast Charging 25W USB C Wall Charger Block with Type C" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('Samsung Charger Super Fast Charging 25W USB C Wall Charger Block with Type C', 13)">Buy Now</button>
+            </div>
         </div>
-        <div class="product-card" data-name="Airpods 3 Lightning" data-price="36" data-category="Headphones">
-            <img src="https://m.media-amazon.com/images/I/51oc-XVy47L.__AC_SX300_SY300_QL70_ML2_.jpg" alt="Headphone 3">
-            <h3>Airpods 3 Lightning</h3>
-            <p class="price">$36</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Airpods 3 Lightning', 36)">Buy Now</button>
+    
+        <h2 id="cases" data-category="Cases">Cases</h2>
+        <div class="product-grid">
+            <div class="product-card" data-name="IBENZER MacBook glitter case with keyboard cover" data-price="30" data-category="Cases">
+                <img src="https://static.wixstatic.com/media/ebb054_a7a291bd11fd45c5942c40be7eef0a4e~mv2.jpg/v1/fill/w_335,h_335,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ebb054_a7a291bd11fd45c5942c40be7eef0a4e~mv2.jpg" alt="Case 1">
+                <h3>IBENZER MacBook glitter case with keyboard cover</h3>
+                <p class="price">$30</p>
+                <div class="heart" data-product="IBENZER MacBook glitter case with keyboard cover" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('IBENZER MacBook glitter case with keyboard cover', 30)">Buy Now</button>
+            </div>
+    
+            <div class="product-card" data-name="mCover Case for Microsoft Surface Laptop Windows PC" data-price="43" data-category="Cases">
+                <img src="https://m.media-amazon.com/images/I/51zPqDKBi0L._AC_SL1500_.jpg" alt="Case 2">
+                <h3>mCover Case for Microsoft Surface Laptop Windows PC</h3>
+                <p class="price">$43</p>
+                <div class="heart" data-product="mCover Case for Microsoft Surface Laptop Windows PC" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('mCover Case for Microsoft Surface Laptop Windows PC', 43)">Buy Now</button>
+            </div>
+    
+            <div class="product-card" data-name="Shockproof iPhone Bumper Cover, Anti-Scratch Clear Back" data-price="10" data-category="Cases">
+                <img src="https://m.media-amazon.com/images/I/61VOapslcsL._AC_SX679_.jpg" alt="Case 3">
+                <h3>Shockproof iPhone Bumper Cover, Anti-Scratch Clear Back</h3>
+                <p class="price">$10</p>
+                <div class="heart" data-product="Shockproof iPhone Bumper Cover, Anti-Scratch Clear Back" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('Shockproof iPhone Bumper Cover, Anti-Scratch Clear Back', 10)">Buy Now</button>
+            </div>
+    
+            <div class="product-card" data-name="Samsung Galaxy Case: Clear with 2pcs Screen Protector Reinforced Corners" data-price="15" data-category="Cases">
+                <img src="https://m.media-amazon.com/images/I/71HI-jE0a4L.jpg" alt="Case 4">
+                <h3>Samsung Galaxy Case: Clear with 2pcs Screen Protector Reinforced Corners</h3>
+                <p class="price">$15</p>
+                <div class="heart" data-product="Samsung Galaxy Case: Clear with 2pcs Screen Protector Reinforced Corners" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('Samsung Galaxy Case: Clear with 2pcs Screen Protector Reinforced Corners', 15)">Buy Now</button>
+            </div>
         </div>
-        <div class="product-card" data-name="SAMSUNG Galaxy Buds 3" data-price="289" data-category="Headphones">
-            <img src="https://m.media-amazon.com/images/I/61DWCJmKe7L.__AC_SX300_SY300_QL70_ML2_.jpg" alt="Headphone 4">
-            <h3>SAMSUNG Galaxy Buds 3</h3>
-            <p class="price">$289</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('SAMSUNG Galaxy Buds 3', 289)">Buy Now</button>
+    
+        <h2 id="other-accessories" data-category="Other Accessories">Other Accessories</h2>
+        <div class="product-grid">
+            <div class="product-card" data-name="APPLE HOMEPOD WHITE MQJ83PA" data-price="399" data-category="Other Accessories">
+                <img src="https://www.gaincity.com/media/catalog/product/cache/6c6c50d4c233a553cee4f0d7353c6a74/s/e/sea_homepod_pdp_image_position-3_1.jpg" alt="Accessory 1">
+                <h3>APPLE HOMEPOD WHITE MQJ83PA</h3>
+                <p class="price">$399</p>
+                <div class="heart" data-product="APPLE HOMEPOD WHITE MQJ83PA" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('APPLE HOMEPOD WHITE MQJ83PA', 399)">Buy Now</button>
+            </div>
+    
+            <div class="product-card" data-name="Logitech Z407 40 W Anthracite Wired & Wireless Z407" data-price="118" data-category="Other Accessories">
+                <img src="https://m.media-amazon.com/images/I/61srIgX9KYL._AC_SX679_.jpg" alt="Accessory 2">
+                <h3>Logitech Z407 40 W Anthracite Wired & Wireless Z407</h3>
+                <p class="price">$118</p>
+                <div class="heart" data-product="Logitech Z407 40 W Anthracite Wired & Wireless Z407" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('Logitech Z407 40 W Anthracite Wired & Wireless Z407', 118)">Buy Now</button>
+            </div>
+    
+            <div class="product-card" data-name="Magic Mouse (USB‑C) - White Multi-Touch Surface" data-price="99" data-category="Other Accessories">
+                <img src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/MXK53?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1730508286345" alt="Accessory 3">
+                <h3>Magic Mouse (USB‑C) - White Multi-Touch Surface</h3>
+                <p class="price">$99</p>
+                <div class="heart" data-product="Magic Mouse (USB‑C) - White Multi-Touch Surface" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('Magic Mouse (USB‑C) - White Multi-Touch Surface', 99)">Buy Now</button>
+            </div>
+    
+            <div class="product-card" data-name="HP Wireless Mouse, Z3700, Quiet, Dual Wireless Mouse" data-price="15" data-category="Other Accessories">
+                <img src="https://m.media-amazon.com/images/I/61qtfg+W4NL._AC_SX679_.jpg" alt="Accessory 4">
+                <h3>HP Wireless Mouse, Z3700, Quiet, Dual Wireless Mouse</h3>
+                <p class="price">$15</p>
+                <div class="heart" data-product="HP Wireless Mouse, Z3700, Quiet, Dual Wireless Mouse" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('HP Wireless Mouse, Z3700, Quiet, Dual Wireless Mouse', 15)">Buy Now</button>
+            </div>
         </div>
-    </div>
+    </section>
+    
 
-    <h2 id="chargers" data-category="Chargers">Chargers</h2>
-    <div class="product-grid">
-        <div class="product-card" data-name="61W 87W 96W 140W USB-C Power Adapter Type-C Charger for Apple Macbook Air Pro" data-price="100" data-category="Chargers">
-            <img src="https://i.ebayimg.com/images/g/hcMAAOSwZnlkQQXV/s-l960.webp" alt="Charger 1">
-            <h3>61W 87W 96W 140W USB-C Power Adapter Type-C Charger for Apple Macbook Air Pro</h3>
-            <p class="price">$100</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('61W 87W 96W 140W USB-C Power Adapter Type-C Charger for Apple Macbook Air Pro', 100)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="HP 19.5v 3.33a 65w 4.5*3.0mm power adapter charger" data-price="29" data-category="Chargers">
-            <img src="https://down-sg.img.susercontent.com/file/fed586fee82e226e09ba1455c984e618.webp" alt="Charger 2">
-            <h3>HP 19.5v 3.33a 65w 4.5*3.0mm power adapter charger</h3>
-            <p class="price">$29</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('HP 19.5v 3.33a 65w 4.5*3.0mm power adapter charger', 29)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="20W Fast Charging Power Adapter PD Type C Charger Block" data-price="11" data-category="Chargers">
-            <img src="https://i.ebayimg.com/images/g/QEsAAOSwXExhowgE/s-l960.webp" alt="Charger 3">
-            <h3>20W Fast Charging Power Adapter PD Type C Charger Block</h3>
-            <p class="price">$11</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('20W Fast Charging Power Adapter PD Type C Charger Block', 11)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="Samsung Charger Super Fast Charging 25W USB C Wall Charger Block with Type C" data-price="13" data-category="Chargers">
-            <img src="https://i.ebayimg.com/images/g/BCcAAOSwHxdm2aMU/s-l960.webp" alt="Charger 4">
-            <h3>Samsung Charger Super Fast Charging 25W USB C Wall Charger Block with Type C</h3>
-            <p class="price">$13</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Samsung Charger Super Fast Charging 25W USB C Wall Charger Block with Type C', 13)">Buy Now</button>
-        </div>
-    </div>
-
-    <h2 id="cases" data-category="Cases">Cases</h2>
-    <div class="product-grid">
-        <div class="product-card" data-name="IBENZER MacBook glitter case with keyboard cover" data-price="30" data-category="Cases">
-            <img src="https://static.wixstatic.com/media/ebb054_a7a291bd11fd45c5942c40be7eef0a4e~mv2.jpg/v1/fill/w_335,h_335,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ebb054_a7a291bd11fd45c5942c40be7eef0a4e~mv2.jpg" alt="Case 1">
-            <h3>IBENZER MacBook glitter case with keyboard cover</h3>
-            <p class="price">$30</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('IBENZER MacBook glitter case with keyboard cover', 30)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="mCover Case for Microsoft Surface Laptop Windows PC" data-price="43" data-category="Cases">
-            <img src="https://m.media-amazon.com/images/I/51zPqDKBi0L._AC_SL1500_.jpg" alt="Case 2">
-            <h3>mCover Case for Microsoft Surface Laptop Windows PC</h3>
-            <p class="price">$43</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('mCover Case for Microsoft Surface Laptop Windows PC', 43)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="Shockproof iPhone Bumper Cover, Anti-Scratch Clear Back" data-price="10" data-category="Cases">
-            <img src="https://m.media-amazon.com/images/I/61VOapslcsL._AC_SX679_.jpg" alt="Case 3">
-            <h3>Shockproof iPhone Bumper Cover, Anti-Scratch Clear Back</h3>
-            <p class="price">$10</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Shockproof iPhone Bumper Cover, Anti-Scratch Clear Back', 10)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="Samsung Galaxy Case: Clear with 2pcs Screen Protector Reinforced Corners" data-price="15" data-category="Cases">
-            <img src="https://m.media-amazon.com/images/I/71HI-jE0a4L.jpg" alt="Case 4">
-            <h3>Samsung Galaxy Case: Clear with 2pcs Screen Protector Reinforced Corners</h3>
-            <p class="price">$15</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Samsung Galaxy Case: Clear with 2pcs Screen Protector Reinforced Corners', 15)">Buy Now</button>
-        </div>
-    </div>
-</section>
-    <h2 id="other-accessories" data-category="Other Accessories">Other Accessories</h2>
-    <div class="product-grid">
-        <div class="product-card" data-name="APPLE HOMEPOD WHITE MQJ83PA" data-price="399" data-category="Other Accessories">
-            <img src="https://www.gaincity.com/media/catalog/product/cache/6c6c50d4c233a553cee4f0d7353c6a74/s/e/sea_homepod_pdp_image_position-3_1.jpg" alt="Accessory 1">
-            <h3>APPLE HOMEPOD WHITE MQJ83PA</h3>
-            <p class="price">$399</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('APPLE HOMEPOD WHITE MQJ83PA', 399)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="Logitech Z407 40 W Anthracite Wired & Wireless Z407" data-price="118" data-category="Other Accessories">
-            <img src="https://m.media-amazon.com/images/I/61srIgX9KYL._AC_SX679_.jpg" alt="Accessory 2">
-            <h3>Logitech Z407 40 W Anthracite Wired & Wireless Z407</h3>
-            <p class="price">$118</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Logitech Z407 40 W Anthracite Wired & Wireless Z407', 118)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="Magic Mouse (USB‑C) - White Multi-Touch Surface" data-price="99" data-category="Other Accessories">
-            <img src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/MXK53?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1730508286345" alt="Accessory 3">
-            <h3>Magic Mouse (USB‑C) - White Multi-Touch Surface</h3>
-            <p class="price">$99</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('Magic Mouse (USB‑C) - White Multi-Touch Surface', 99)">Buy Now</button>
-        </div>
-        <div class="product-card" data-name="HP Wireless Mouse, Z3700, Quiet, Dual Wireless Mouse" data-price="15" data-category="Other Accessories">
-            <img src="https://m.media-amazon.com/images/I/61qtfg+W4NL._AC_SX679_.jpg" alt="Accessory 4">
-            <h3>HP Wireless Mouse, Z3700, Quiet, Dual Wireless Mouse</h3>
-            <p class="price">$15</p>
-            <button class="buy-now-btn" onclick="handleBuyNow('HP Wireless Mouse, Z3700, Quiet, Dual Wireless Mouse', 15)">Buy Now</button>
-        </div>
-    </div>
-
-</section>
 
 </body>
 </html>
