@@ -680,8 +680,8 @@ h2 {
     display: inline-block;
     background-color: transparent;
     position: absolute;
-    bottom: 23  px; 
-    left: 30px;
+    bottom: 26px; 
+    right: 35px;
     cursor: pointer;
     font-size: 24px;
     color: gray; /* Default unlit color */
@@ -741,8 +741,98 @@ h2 {
 
 .buy-now-btn:hover {
     background-color: #c0392b;
-<<<<<<< HEAD
 }
-=======
+
+/* General reset for padding and margin */
+/* General reset for padding and margin */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
->>>>>>> d2fc0cbced25fb1781b4f9769c04e4f09718d3ff
+
+/* Set up a basic font style */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Styling for the header */
+#header-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Style for the heading */
+h1 {
+    font-size: 2.2em;
+    color: #4CAF50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Style the feedback form */
+#feedbackForm {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 550px; /* Increased width */
+    width: 90%; /* Ensures it scales well */
+    margin: 0 auto;
+}
+
+/* Style form fields */
+#feedbackForm div {
+    margin-bottom: 20px;
+}
+
+/* Style labels */
+#feedbackForm label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+/* Style input fields */
+#feedbackForm input,
+#feedbackForm textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1.1em;
+}
+
+/* Style the submit button */
+#feedbackForm button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2em;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+}
+
+#feedbackForm button:hover {
+    background-color: #45a049;
+}
+
+/* Ensure responsiveness */
+@media (max-width: 700px) {
+    h1 {
+        font-size: 1.8em;
+    }
+
+    #feedbackForm {
+        padding: 20px;
+        max-width: 95%; /* Ensures it fits within smaller screens */
+    }
+}
