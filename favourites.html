@@ -5,46 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Favourites</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .product-card {
-            width: 200px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            background-color: #fff;
-            margin: 10px;
-            text-align: center;
-        }
-
-        .product-card img {
-            width: 100%;
-            height: auto;
-        }
-
-        .product-card h3 {
-            margin: 10px 0;
-        }
-
-        .product-card .price {
-            color: green;
-            font-weight: bold;
-        }
-
-        .remove-btn {
-            margin-top: 10px;
-            padding: 5px 10px;
-            background-color: red;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        .remove-btn:hover {
-            background-color: darkred;
-        }
-    </style>
 </head>
 <body>
     <div id="header-container"></div>
+    <h1>Favourites</h1>
+    <div id="favourite-list" class="product-grid"></div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             fetch('header.html')
@@ -54,13 +19,7 @@
                 })
                 .catch(error => console.error('Error loading header:', error));
         });
-    </script>
 
-    <h1>Favourites</h1>
-
-    <div id="favourite-list" class="product-grid"></div>
-
-    <script>
         function loadFavourites() {
             const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
             const container = document.getElementById('favourite-list');
@@ -84,13 +43,12 @@
             });
         }
 
-        // Function to remove an item from favourites
         function removeFromFavourites(index) {
             let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
-            favourites.splice(index, 1); // Remove item from array
+            favourites.splice(index, 1); 
             localStorage.setItem('favourites', JSON.stringify(favourites));
 
-            loadFavourites(); // Refresh the list after removal
+            loadFavourites(); 
         }
 
         window.onload = loadFavourites;
