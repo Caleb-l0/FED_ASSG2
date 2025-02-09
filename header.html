@@ -1,9 +1,6 @@
-
 <header class="header">
-    <!-- First Banner: Menu and Logo -->
     <div class="first-banner">
         <div class="menu-container">
-            <!-- Dropdown Menu -->
             <div class="dropdown">
                 <button class="dropbtn">☰ Menu</button>
                 <div class="dropdown-content">
@@ -15,27 +12,19 @@
                     <a href="login.html" onclick="handleLogout()">Logout</a>
                 </div>
             </div>
-
-            <!-- Company Name -->
             <div class="company-name"><a href="index.html">MokeSell</a></div>
         </div>
     </div>
 
-    <!-- Second Banner: Search Bar and Icons -->
     <div class="second-banner">
-        <!-- Search Bar -->
         <div class="search-container">
-            <input type="text" class="search-bar" placeholder="Search products..." id="search-input">
-            <button class="search-btn" onclick="performSearch()">Search</button>
         </div>
 
-        <!-- Navigation Links -->
         <div class="nav-icons">
             <a href="listings.html"><img src="https://img.icons8.com/?size=100&id=7633&format=png&color=000000"></a>
             <a href="favourites.html"><img src="https://img.icons8.com/?size=100&id=MDpzRDCE7Alp&format=png&color=000000"></a>
         </div>
 
-        <!-- Chat, Cart, Account (Desktop) -->
         <div class="desktop-icons">
             <a href="chat.html" class="chat-icon"><img src="https://img.icons8.com/?size=100&id=7859&format=png&color=000000"></a>
             <a href="cart.html" class="cart-icon"><img src="https://img.icons8.com/?size=100&id=59997&format=png&color=000000"></a>
@@ -46,21 +35,12 @@
 
 <script>
     function performSearch() {
-        const query = document.getElementById("search-input").value.toLowerCase();
-        const allSections = document.querySelectorAll('.product-grid');
+        const query = document.getElementById("search-input").value.toLowerCase(); 
         
-        let found = false;
-        
-        allSections.forEach(section => {
-            const sectionTitle = section.previousElementSibling;
-            if (sectionTitle && sectionTitle.textContent.toLowerCase().includes(query)) {
-                sectionTitle.scrollIntoView({ behavior: 'smooth' });
-                found = true;
-            }
+        // Scroll down by 100px when the search button is pressed
+        window.scrollBy({
+            top: 100, 
+            behavior: 'smooth'
         });
-
-        if (!found) {
-            alert("No results found for: " + query);
-        }
     }
 </script>
