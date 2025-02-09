@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MokeSell - Home</title>
     <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
     <div id="header-container"></div>
@@ -65,7 +64,7 @@ function handleBuyNow(productName, productCost) {
             changeSlide(1);
         }
 
-        setInterval(autoChangeSlide, 10000); // Change slide every 10 seconds
+        setInterval(autoChangeSlide, 10000); 
 
         const products = [
     { name: 'Razor Gaming Laptop', oldPrice: '$1200', price: '$999', image: 'https://assets2.razerzone.com/images/pnx.assets/5af9b83e1a46bac99f7ed80fd498390d/razer-blade-14-p10-500x500.webp' },
@@ -131,26 +130,34 @@ function insertProducts(listId) {
     localStorage.setItem('favourites', JSON.stringify(favourites));
 }
 
-window.onload = function() {
-    const hearts = document.querySelectorAll('.heart');
-    let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+document.addEventListener("DOMContentLoaded", function () {
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+            updateHearts(); 
+        });
 
-    hearts.forEach(heart => {
-        const productName = heart.getAttribute('data-product');
-        const isLiked = favourites.some(item => item.name === productName);  
+    function updateHearts() {
+        const hearts = document.querySelectorAll('.heart');
+        let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
 
-        if (isLiked) {
-            heart.classList.add("liked");
-        } else {
-            heart.classList.remove("liked");
-        }
-    });
-};
+        hearts.forEach(heart => {
+            const productName = heart.closest('.product-card')?.getAttribute('data-name'); 
+            if (productName && favourites.some(item => item.name === productName)) {
+                heart.classList.add("liked");
+            } else {
+                heart.classList.remove("liked");
+            }
+        });
+    }
 
+    updateHearts(); 
+});
 
 </script>
 <script>
-    
+
  window.onload = function() {
     const searchBar = document.getElementById('search-bar'); 
     const searchButton = document.getElementById('search-btn');
