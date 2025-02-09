@@ -15,24 +15,14 @@ body {
 }
 
 .header {
-    background: 
-    radial-gradient(circle at 15% 25%, #f8e1e1, transparent 40%), 
-        radial-gradient(circle at 50% 20%, #e1f4fb, transparent 20%), 
-        radial-gradient(circle at 70% 30%, #f9e2e4, transparent 40%),
-        radial-gradient(circle at 25% 60%, #f4d3d7, transparent 40%),
-        radial-gradient(circle at 80% 40%, #f7d9e3, transparent 40%),
-        radial-gradient(circle at 60% 70%, #f8d4e2, transparent 30%),
-        radial-gradient(circle at 40% 50%, #fbe1e6, transparent 40%),
-        radial-gradient(circle at 30% 50%, #d6f0f9, transparent 20%), 
-        radial-gradient(circle at 75% 30%, #e1f4fb, transparent 20%),  
-        radial-gradient(circle at 10% 10%, #a3e0f5, transparent 40%);  
     padding: 10px 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     width: 100%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
 }
+
 
 .first-banner {
     display: flex;
@@ -84,7 +74,7 @@ body {
 }
 
 .dropdown-content a:hover {
-    background-color: #f0f0f0;
+    background-color: #ea7bfb;
 }
 
 .company-name {
@@ -137,7 +127,7 @@ body {
 }
 
 .nav-icons a:hover {
-    background-color: #f0f0f0;
+    background-color: #ea7bfb;
     color: #555;
 }
 
@@ -158,7 +148,7 @@ body {
 }
 
 .desktop-icons a:hover {
-    background-color: #f0f0f0;
+    background-color: #ea7bfb;
     color: #555;
 }
 
@@ -244,7 +234,7 @@ body {
     }
 
     .mobile-icons a:hover {
-        background-color: #f0f0f0;
+        background-color: #ea7bfb;
         color: #555;
     }
 }
@@ -356,7 +346,7 @@ body {
 }
 
 .cart-table tr:hover {
-    background-color: #f1f1f1;
+    background-color: #ea7bfb;
 }
 
 .cart-total {
@@ -364,7 +354,7 @@ body {
 }
 
 .checkout-button {
-    background-color: #4CAF50;
+    background-color: #f0cef5 ;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -375,7 +365,7 @@ body {
 }
 
 .checkout-button:hover {
-    background-color: #45a049;
+    background-color: #ea7bfb ;
 }
 
 .cart-empty-message {
@@ -521,7 +511,7 @@ h2 {
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 20px;
-    color: #4CAF50;
+    color: #e57dfc ;
 }
 
 #login-section {
@@ -537,7 +527,7 @@ h2 {
 
 #login-btn {
     padding: 10px 15px;
-    background-color: #4CAF50;
+    background-color: #f0cef5;
     color: white;
     font-size: 16px;
     border: none;
@@ -546,7 +536,7 @@ h2 {
 }
 
 #login-btn:hover {
-    background-color: #45a049;
+    background-color: #ea7bfb ;
 }
 
 #listing-form {
@@ -572,7 +562,7 @@ h2 {
 
 #listing-form button[type="submit"] {
     padding: 12px;
-    background-color: #4CAF50;
+    background-color: #f0cef5;
     color: white;
     font-size: 16px;
     border: none;
@@ -581,7 +571,7 @@ h2 {
 }
 
 #listing-form button[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #ea7bfb;
 }
 
 #listings-container {
@@ -678,7 +668,7 @@ h2 {
 }
 
 .buy-now-btn:hover {
-    background-color: #5225e8;
+    background-color: #ea7bfb;
 }
 
 .slider-container {
@@ -812,7 +802,7 @@ transform: scale(1.1);
 
 h1 {
     font-size: 2.2em;
-    color: #4CAF50;
+    color: #e8a0f8 ;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -848,7 +838,7 @@ h1 {
 }
 
 #feedbackForm button {
-    background-color: #4CAF50;
+    background-color: #f0cef5;
     color: white;
     padding: 12px 25px;
     border: none;
@@ -860,7 +850,7 @@ h1 {
 }
 
 #feedbackForm button:hover {
-    background-color: #45a049;
+    background-color: #ea7bfb;
 }
 
 @media (max-width: 700px) {
@@ -913,7 +903,7 @@ h1 {
 
   .edit-btn {
     margin-top: 20px;
-    background-color: #007bff;
+    background-color: #f0cef5;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -921,7 +911,7 @@ h1 {
   }
 
   .edit-btn:hover {
-    background-color: #0056b3;
+    background-color: #ea7bfb;
   }
 
 
@@ -987,7 +977,7 @@ h2 {
 }
 
 #chat-header {
-    background-color: #4CAF50;
+    background-color: #f0cef5;
     color: white;
     padding: 10px;
     text-align: center;
@@ -1032,7 +1022,7 @@ h2 {
 
 button {
     padding: 10px;
-    background-color: #28a745;
+    background-color: #f0cef5;
     color: white;
     border: none;
     border-radius: 5px;
@@ -1041,10 +1031,10 @@ button {
 }
 
 button:hover {
-    background-color: #218838;
+    background-color: #dc70ed;
 }
         .product-card .price {
-            color: green;
+            color: #ff3f3f;
             font-weight: bold;
         }
 
@@ -1084,7 +1074,7 @@ button:hover {
     padding: 10px 17px;
     margin-top: -1px;
     font-size: 16px;
-    background-color: #4CAF50;
+    background-color: #f0cef5;
     color: white;
     border: none;
     border-radius: 5px;
@@ -1093,9 +1083,9 @@ button:hover {
 }
 
 #search-btn:hover {
-    background-color: #45a049;
+    background-color: #ea7bfb ;
 }
 
 #search-bar:focus {
-    border-color: #4CAF50;
+    border-color: #f0cef5 ;
 }
