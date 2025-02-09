@@ -17,7 +17,6 @@
 <div class="container">
     <h2>Update Account Details</h2>
 
-    <!-- Update Form -->
     <div class="form" id="updateForm">
         <input type="text" id="updateName" placeholder="Full Name">
         <input type="text" id="updateUsername" placeholder="Username">
@@ -103,7 +102,7 @@
         })
         .then(({status, body}) => {
             console.log('Update response data:', body);
-            if (status === 200 || status === 201) { // Checking for success status
+            if (status === 200 || status === 201) { 
                 document.getElementById('updateMsg').style.display = "block";
                 setTimeout(function () {
                     document.getElementById('updateMsg').style.display = "none";
@@ -120,6 +119,5 @@
         });
     }
 </script>
-
 </body>
 </html>
