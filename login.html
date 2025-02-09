@@ -18,8 +18,6 @@
 
 <div class="container">
     <h2>Account System</h2>
-
-    <!-- Signup Form -->
     <div class="form" id="signupForm">
         <h3>Create Account</h3>
         <input type="text" id="signupName" placeholder="Full Name">
@@ -30,7 +28,6 @@
         <p>Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
     </div>
 
-    <!-- Login Form -->
     <div class="form active" id="loginForm">
         <h3>Login</h3>
         <input type="text" id="loginUsername" placeholder="Username">
@@ -39,12 +36,10 @@
         <p>Don't have an account? <a href="#" onclick="toggleForms()">Sign Up</a></p>
     </div>
 </div>
-
 <script>
-    const apiUrl = 'https://mokesell-3ddd.restdb.io/rest/userss';  // Replace with your RESTdb API URL
-    const apiKey = '67a60e04f59921a39048b97f';  // Replace with your RESTdb API key
+    const apiUrl = 'https://mokesell-3ddd.restdb.io/rest/userss';  
+    const apiKey = '67a60e04f59921a39048b97f';  
 
-    // Toggle between Sign Up and Login forms
     function toggleForms() {
         document.getElementById('signupForm').classList.toggle('active');
         document.getElementById('loginForm').classList.toggle('active');
@@ -61,7 +56,6 @@
         return;
     }
 
-    // Create user in RESTdb
     fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -70,11 +64,10 @@
         },
         body: JSON.stringify({ name, username, email, password })
     })
-    .then(response => response.json())  // This processes the response
+    .then(response => response.json())  
     .then(data => {
-        console.log(data);  // Log the response data to the console for debugging
+        console.log(data);  
 
-        // Check if the account was successfully created
         if (data._id) {
             alert('Account created successfully!');
             toggleForms();
@@ -87,7 +80,6 @@
         alert('Error creating account');
     });
 }
-    // Login function with redirection to index.html
     function login() {
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
@@ -97,7 +89,6 @@
         return;
     }
 
-    // Check user in RESTdb
     fetch(`${apiUrl}?q={"username":"${username}","password":"${password}"}`, {
         method: 'GET',
         headers: {
@@ -108,8 +99,8 @@
     .then(data => {
         if (data.length > 0) {
     alert('Login successful!');
-    localStorage.setItem('username', username); // Store username in local storage
-    window.location.href = `loading.html?username=${encodeURIComponent(username)}`;
+    localStorage.setItem('username', username); 
+    window.location.href = `index.html?username=${encodeURIComponent(username)}`;
 } else {
     alert('Invalid username or password');
 }
