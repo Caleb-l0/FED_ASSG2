@@ -9,10 +9,7 @@
     <script>
         const API_KEY = "67a60e04f59921a39048b97f";
         const DB_NAME = "testing-80a6";
-        // Using a CORS proxy for testing
         const LISTINGS_URL = `https://mokesell-3ddd.restdb.io/rest/listings`;
-        
-
         let totalCost = 0;
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -22,19 +19,17 @@
                     document.getElementById('header-container').innerHTML = data;
                 });
 
-            // Check if user is already logged in
             const username = localStorage.getItem("username");
             console.log("Logged in username:", username);
             if (username) {
                 document.getElementById("user-info").innerText = "Logged in as: " + username;
                 document.getElementById("login-section").style.display = "none";
                 document.getElementById("listing-form").style.display = "block";
-                loadListings();  // Only load listings if logged in
+                loadListings(); 
             } else {
                 document.getElementById("login-section").style.display = "block";
             }
 
-            // Login button event
             document.getElementById("login-btn").addEventListener("click", function() {
                 const usernameInput = document.getElementById("username").value.trim();
                 if (usernameInput) {
@@ -42,13 +37,12 @@
                     document.getElementById("user-info").innerText = "Logged in as: " + usernameInput;
                     document.getElementById("login-section").style.display = "none";
                     document.getElementById("listing-form").style.display = "block";
-                    loadListings();  // Load listings after successful login
+                    loadListings(); 
                 } else {
                     alert("Please enter a valid username.");
                 }
             });
 
-            // Submit listing form event
             document.getElementById("listing-form").addEventListener("submit", async function(e) {
                 e.preventDefault();
                 const name = document.getElementById("name").value;
@@ -68,12 +62,11 @@
                 };
 
                 await postListing(listing);
-                loadListings();  // Reload listings after posting
+                loadListings();
                 e.target.reset();
             });
         });
 
-        // Function to load listings
         async function loadListings() {
             try {
                 const response = await fetch(LISTINGS_URL, {
@@ -91,17 +84,15 @@
             }
         }
 
-        // Function to display listings
         function displayListings(listings) {
             const container = document.getElementById("listings-container");
             container.innerHTML = "";
             listings.forEach(function(listing) {
-                const itemCard = createItemCard(listing.name, listing.price, listing.image, listing._id);  // Include listing ID for delete
+                const itemCard = createItemCard(listing.name, listing.price, listing.image, listing._id); 
                 container.appendChild(itemCard);
             });
         }
 
-        // Function to post a new listing
         async function postListing(listing) {
             try {
                 const response = await fetch(LISTINGS_URL, {
@@ -122,7 +113,6 @@
             }
         }
 
-        // Function to handle 'Buy Now' functionality
         function handleBuyNow(productName, productPrice) {
             totalCost += parseFloat(productPrice);
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -131,7 +121,6 @@
             alert("You have added " + productName + " to your cart. Total cost: $" + totalCost.toFixed(2));
         }
 
-        // Function to create an item card
         function createItemCard(name, price, image, listingId) {
             const itemCard = document.createElement('div');
             itemCard.classList.add('product-card');
@@ -172,7 +161,6 @@
             return itemCard;
         }
 
-        // Function to delete a listing
         async function deleteListing(listingId) {
             try {
                 const response = await fetch(`${LISTINGS_URL}/${listingId}`, {
@@ -188,7 +176,7 @@
                 }
 
                 alert("Listing deleted successfully!");
-                loadListings(); // Reload listings after deleting
+                loadListings(); 
             } catch (error) {
                 console.error("Error deleting listing:", error);
             }
@@ -202,19 +190,16 @@
     <section id="listings-section">
         <h2>Listings</h2>
         <div id="user-info"></div>
-
         <div id="login-section">
             <input type="text" id="username" placeholder="Enter Username" required>
             <button id="login-btn">Login</button>
         </div>
-
         <form id="listing-form" style="display:none;">
             <input type="text" id="name" placeholder="Item Name" required>
             <input type="number" id="price" placeholder="Price" required>
             <input type="text" id="image" placeholder="Image URL">
             <button type="submit">Post Listing</button>
         </form>
-
         <section id="listings-container" class="product-grid"></section>
     </section>
 
