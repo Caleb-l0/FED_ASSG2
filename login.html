@@ -1,109 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account System</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account System</title>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form {
+            display: none;
+        }
+
+        .form.active {
+            display: block;
+        }
+
+        .form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form button {
+            width: 100%;
+            padding: 12px;
+            background-color: #f0cef5;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form button:hover {
+            background-color: #ea7bfb;
+        }
+
+        p {
+            text-align: center;
+            color: #666;
+        }
+
+        p a {
+            color: #f0cef5;
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+            }
+        }
+</style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Account System</h2>
-    <div class="form" id="signupForm">
-        <h3>Create Account</h3>
-        <input type="text" id="signupName" placeholder="Full Name">
-        <input type="text" id="signupUsername" placeholder="Username">
-        <input type="email" id="signupEmail" placeholder="Email">
-        <input type="password" id="signupPassword" placeholder="Password">
-        <button onclick="signup()">Sign Up</button>
-        <p>Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
-    </div>
+<h2>Account System</h2>
+<div class="form" id="signupForm">
+<h3>Create Account</h3>
+<input type="text" id="signupName" placeholder="Full Name">
+<input type="text" id="signupUsername" placeholder="Username">
+<input type="email" id="signupEmail" placeholder="Email">
+<input type="password" id="signupPassword" placeholder="Password">
+<button onclick="signup()">Sign Up</button>
+<p>Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
+</div>
 
-    <div class="form active" id="loginForm">
-        <h3>Login</h3>
-        <input type="text" id="loginUsername" placeholder="Username">
-        <input type="password" id="loginPassword" placeholder="Password">
-        <button onclick="login()">Login</button>
-        <p>Don't have an account? <a href="#" onclick="toggleForms()">Sign Up</a></p>
-    </div>
+<div class="form active" id="loginForm">
+<h3>Login</h3>
+<input type="text" id="loginUsername" placeholder="Username">
+<input type="password" id="loginPassword" placeholder="Password">
+<button onclick="login()">Login</button>
+<p>Don't have an account? <a href="#" onclick="toggleForms()">Sign Up</a></p>
+</div>
 </div>
 <script>
-    const apiUrl = 'https://mokesell-3ddd.restdb.io/rest/userss';  
-    const apiKey = '67a60e04f59921a39048b97f';  
+const apiUrl = 'https://mokesell-3ddd.restdb.io/rest/userss';  
+const apiKey = '67a60e04f59921a39048b97f';  
 
-    function toggleForms() {
-        document.getElementById('signupForm').classList.toggle('active');
-        document.getElementById('loginForm').classList.toggle('active');
-    }
-
-    function signup() {
-    const name = document.getElementById('signupName').value;
-    const username = document.getElementById('signupUsername').value;
-    const email = document.getElementById('signupEmail').value;
-    const password = document.getElementById('signupPassword').value;
-
-    if (!name || !username || !email || !password) {
-        alert('Please fill out all fields');
-        return;
-    }
-
-    fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'x-apikey': apiKey
-        },
-        body: JSON.stringify({ name, username, email, password })
-    })
-    .then(response => response.json())  
-    .then(data => {
-        console.log(data);  
-
-        if (data._id) {
-            alert('Account created successfully!');
-            toggleForms();
-        } else {
-            alert('Error creating account');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error creating account');
-    });
+function toggleForms() {
+document.getElementById('signupForm').classList.toggle('active');
+document.getElementById('loginForm').classList.toggle('active');
 }
-    function login() {
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
 
-    if (!username || !password) {
-        alert('Please fill out all fields');
-        return;
-    }
+function signup() {
+const name = document.getElementById('signupName').value;
+const username = document.getElementById('signupUsername').value;
+const email = document.getElementById('signupEmail').value;
+const password = document.getElementById('signupPassword').value;
 
-    fetch(`${apiUrl}?q={"username":"${username}","password":"${password}"}`, {
-        method: 'GET',
-        headers: {
-            'x-apikey': apiKey
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.length > 0) {
-    alert('Login successful!');
-    localStorage.setItem('username', username); 
-    window.location.href = `index.html?username=${encodeURIComponent(username)}`;
+if (!name || !username || !email || !password) {
+alert('Please fill out all fields');
+return;
+}
+
+fetch(apiUrl, {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+'x-apikey': apiKey
+},
+body: JSON.stringify({ name, username, email, password })
+})
+.then(response => response.json())  
+.then(data => {
+console.log(data);  
+
+if (data._id) {
+alert('Account created successfully!');
+toggleForms();
 } else {
-    alert('Invalid username or password');
+alert('Error creating account');
 }
-        
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error logging in');
-    });
+})
+.catch(error => {
+console.error('Error:', error);
+alert('Error creating account');
+});
+}
+function login() {
+const username = document.getElementById('loginUsername').value;
+const password = document.getElementById('loginPassword').value;
+
+if (!username || !password) {
+alert('Please fill out all fields');
+return;
+}
+
+fetch(`${apiUrl}?q={"username":"${username}","password":"${password}"}`, {
+method: 'GET',
+headers: {
+'x-apikey': apiKey
+}
+})
+.then(response => response.json())
+.then(data => {
+if (data.length > 0) {
+alert('Login successful!');
+localStorage.setItem('username', username); 
+    window.location.href = `index.html?username=${encodeURIComponent(username)}`;
+    window.location.href = `loading.html?username=${encodeURIComponent(username)}`;
+} else {
+alert('Invalid username or password');
+}
+
+})
+.catch(error => {
+console.error('Error:', error);
+alert('Error logging in');
+});
 }
 </script>
 
 </body>
+</html>
 </html>
