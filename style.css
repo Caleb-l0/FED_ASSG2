@@ -1,24 +1,39 @@
-
-/* General Styles */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
-    flex-direction: column;
+    flex-direction: column;    
+    background-color: #ddf2d1;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+    margin: 0;
+    background-image: url('https://img.freepik.com/free-photo/pink-cloudy-sky_1048-14279.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; 
 }
 
-/* Header Styles */
 .header {
-    background-color: #f8f8f8;
+    background: 
+    radial-gradient(circle at 15% 25%, #f8e1e1, transparent 40%), 
+        radial-gradient(circle at 50% 20%, #e1f4fb, transparent 20%), 
+        radial-gradient(circle at 70% 30%, #f9e2e4, transparent 40%),
+        radial-gradient(circle at 25% 60%, #f4d3d7, transparent 40%),
+        radial-gradient(circle at 80% 40%, #f7d9e3, transparent 40%),
+        radial-gradient(circle at 60% 70%, #f8d4e2, transparent 30%),
+        radial-gradient(circle at 40% 50%, #fbe1e6, transparent 40%),
+        radial-gradient(circle at 30% 50%, #d6f0f9, transparent 20%), 
+        radial-gradient(circle at 75% 30%, #e1f4fb, transparent 20%),  
+        radial-gradient(circle at 10% 10%, #a3e0f5, transparent 40%);  
     padding: 10px 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     width: 100%;
     box-sizing: border-box;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
 }
 
-/* First Section (Menu and Logo) */
 .first-banner {
     display: flex;
     justify-content: center;  
@@ -27,7 +42,6 @@ body {
     width: 100%;
 }
 
-/* Menu Container (Everything in one row on Web) */
 .menu-container {
     display: flex;
     justify-content: space-between; 
@@ -36,7 +50,6 @@ body {
     width: 100%;
 }
 
-/* Dropdown menu */
 .dropdown {
     position: relative;
 }
@@ -73,7 +86,6 @@ body {
     background-color: #f0f0f0;
 }
 
-/* Company Name */
 .company-name {
     font-size: 18px;
     font-weight: bold;
@@ -89,7 +101,6 @@ body {
     color: #555;
 }
 
-/* Second Section (Search Bar and Icons) */
 .second-banner {
     display: flex;
     justify-content: space-between;  
@@ -99,7 +110,6 @@ body {
     margin-top: 15px; 
 }
 
-/* Search Bar */
 .search-bar {
     padding: 5px 10px;
     border: 1px solid #ddd;
@@ -109,7 +119,6 @@ body {
     min-width: 200px; 
 }
 
-/* Navigation Links (Listings, Favourites) */
 .nav-icons {
     display: flex;
     gap: 15px;
@@ -131,7 +140,6 @@ body {
     color: #555;
 }
 
-/* Desktop Icons (Chat, Cart, Account) */
 .desktop-icons {
     display: flex;
     gap: 20px;
@@ -191,16 +199,13 @@ body {
   }
   
 
-/* Mobile Layout Styles */
 @media (max-width: 768px) {
-    /* First Section (Menu and Logo) */
     .first-banner {
         flex-direction: column;
         gap: 10px; 
         align-items: center;
     }
 
-    /* Second Section (Search Bar and Icons) */
     .second-banner {
         flex-direction: column;
         gap: 10px; 
@@ -208,24 +213,20 @@ body {
         width: 100%;
     }
 
-    /* Combine Navigation and Desktop Icons into a Single Row */
     .nav-icons, .desktop-icons {
         display: flex;
-        flex-direction: row; /* Ensure all icons are in one row */
+        flex-direction: row; 
         gap: 10px;
-        justify-content: space-evenly; /* Even spacing across the row */
+        justify-content: space-evenly; 
         align-items: center;
         width: 100%;
     }
 
-
-    /* Adjust Search Bar to Remain Below Icons */
     .search-bar {
         width: 100%;
-        margin-top: 10px; /* Add spacing below icons */
+        margin-top: 10px; 
     }
 
-    /* Resize Icons for Mobile */
     .desktop-icons img,
     .nav-icons img {
         width: 20px;  
@@ -266,9 +267,6 @@ body {
     margin: 0;
 }
 
-
-/* Cart Stuff */
-
 .cart-items {
     flex: 3;
     background-color: #fff;
@@ -295,13 +293,16 @@ body {
     color: #888;
 }
 
-/* Cart Summary */
 .cart-summary {
     flex: 1;
     background-color: #f5f5f7;
     padding: 20px;
     border: 1px solid #e0e0e0;
     border-radius: 10px;
+    text-align: right;
+    margin-top: 10px;
+    font-size: 18px;
+    color: #333;
 }
 
 .cart-summary h2 {
@@ -357,13 +358,6 @@ body {
     background-color: #f1f1f1;
 }
 
-.cart-summary {
-    text-align: right;
-    margin-top: 10px;
-    font-size: 18px;
-    color: #333;
-}
-
 .cart-total {
     font-weight: bold;
 }
@@ -389,7 +383,7 @@ body {
     color: #888;
     margin: 20px 0;
 }
-/* General Reset */
+
 * {
     margin: 0;
     padding: 0;
@@ -397,12 +391,6 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-body {
-    background-color: #f9f9f9;
-    color: #333;
-}
-
-/* Accessories Hero Section */
 .accessories-hero {
     background-color: #f5f5f7;
     text-align: center;
@@ -421,7 +409,6 @@ body {
     font-size: 1rem;
 }
 
-/* Featured Items Section */
 .featured-items {
     text-align: center;
     padding: 20px;
@@ -433,7 +420,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* Product Grid */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -443,15 +429,22 @@ body {
     padding: 20px 0;
 }
 
-/* Product Card */
 .product-card {
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
     border-radius: 10px;
-    padding: 15px;
     text-align: center;
     transition: transform 0.2s, box-shadow 0.2s;
-}
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    min-width: 250px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    margin: 10px;
+    }
+
 
 .product-card:hover {
     transform: scale(1.05);
@@ -459,16 +452,19 @@ body {
 }
 
 .product-card img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 5px;
     margin-bottom: 10px;
+    border-radius: 8px;
+    width: 100%;
+    height: auto;
 }
 
 .product-card h3 {
-    font-size: 1.5rem;
     color: #333;
     margin-bottom: 10px;
+    font-weight: 600;
+    margin-top: 15px;
+    font-size: 1.2rem;
+    margin: 10px 0;
 }
 
 .product-card .price {
@@ -477,9 +473,7 @@ body {
     margin-bottom: 10px;
 }
 
-/* Buy Now Button */
 .buy-now-btn {
-    background-color: #007BFF;
     color: #fff;
     padding: 10px 15px;
     border: none;
@@ -487,13 +481,14 @@ body {
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s;
+    margin-top: 10px;
+    padding: 8px 12px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.buy-now-btn:hover {
-    background-color: #0056b3;
-}
-
-/* Footer Section */
 .footer {
     text-align: center;
     background-color: #fff;
@@ -508,30 +503,13 @@ body {
     margin-bottom: 10px;
 }
 
-/* Add this to your style.css file */
 
-/* Basic Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Body */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-    margin: 0;
-    padding: 20px;
-}
-
-/* Header */
 #header-container {
-    margin-bottom: 20px;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-/* Listings Section */
+
 #listings-section {
     max-width: 1200px;
     margin: 0 auto;
@@ -545,7 +523,6 @@ h2 {
     color: #4CAF50;
 }
 
-/* Login Section */
 #login-section {
     margin-bottom: 20px;
 }
@@ -612,26 +589,6 @@ h2 {
     gap: 20px;
 }
 
-.product-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    text-align: center;
-    padding: 10px;
-}
-
-.product-card img {
-    width: 100%;
-    height: auto;
-    border-radius: 5px;
-}
-
-.product-card h3 {
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 15px;
-}
 
 .product-card .price {
     font-size: 16px;
@@ -640,8 +597,8 @@ h2 {
 }
 
 .product-card .buy-now-btn {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #f0cef5;
+    color: rgb(216, 170, 170);
     padding: 10px 15px;
     font-size: 14px;
     border: none;
@@ -651,10 +608,10 @@ h2 {
 }
 
 .product-card .buy-now-btn:hover {
-    background-color: #45a049;
+    background-color: #ea7bfb;
+    color: rgb(226, 19, 19);
 }
 
-/* Styling for the delete button */
 .delete-btn {
     position: absolute;
     top: 10px;
@@ -684,7 +641,7 @@ h2 {
     right: 35px;
     cursor: pointer;
     font-size: 24px;
-    color: gray; /* Default unlit color */
+    color: gray; 
     transition: transform 0.2s ease;
 }
 
@@ -707,7 +664,7 @@ h2 {
 }
 
 .heart.liked {
-    color: pink; /* Lit (favorite) color */
+    color: pink; 
 }
 
 .heart.liked::before,
@@ -719,54 +676,139 @@ h2 {
     transform: scale(1.1);
 }
 
-.product-card {
+.buy-now-btn:hover {
+    background-color: #5225e8;
+}
+
+.slider-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
-    background-color: white;
-    padding: 1rem;
-    min-width: 250px;
+    margin: 20px 0;
+}
+
+.slider {
+    width: 750px;
+    height: 250px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    overflow: hidden;
 }
 
-.buy-now-btn {
-    margin-top: 10px;
-    padding: 8px 12px;
-    background-color: #e74c3c;
+.slider img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.slider img.active {
+    display: block;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
     color: white;
     border: none;
-    border-radius: 5px;
+    padding: 10px;
     cursor: pointer;
+    font-size: 18px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
 }
 
-.buy-now-btn:hover {
-    background-color: #c0392b;
+.slider-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* General reset for padding and margin */
-/* General reset for padding and margin */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.prev {
+    left: 120px;
 }
 
-/* Set up a basic font style */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    line-height: 1.6;
+.next {
+    right: 120px;
+}
+
+.product-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 20px;
+    overflow-x: hidden;
+    position: relative;
 }
 
-/* Styling for the header */
-#header-container {
-    text-align: center;
-    margin-bottom: 30px;
+.product-list {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 20px 0;
+    width: 80%;
+    scrollbar-width: none;
 }
 
-/* Style for the heading */
+.product-list::-webkit-scrollbar {
+    display: none; 
+}
+
+.product-card .price {
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    z-index: 1; 
+}
+
+.scroll-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.scroll-left {
+    left: 55px;
+}
+
+.scroll-right {
+    right: 55px;
+}
+
+.discount-label {
+text-align: center;
+font-size: 24px;
+font-weight: bold;
+color: white;
+background-color: #e74c3c;
+padding: 12px;
+border-radius: 5px;
+margin: 20px auto;
+width: fit-content;
+display: block;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+text-transform: uppercase;
+}
+
+.heart:hover {
+transform: scale(1.1); 
+}
+
 h1 {
     font-size: 2.2em;
     color: #4CAF50;
@@ -774,23 +816,20 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Style the feedback form */
 #feedbackForm {
     background-color: #fff;
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    max-width: 550px; /* Increased width */
-    width: 90%; /* Ensures it scales well */
+    max-width: 550px; 
+    width: 90%; 
     margin: 0 auto;
 }
 
-/* Style form fields */
 #feedbackForm div {
     margin-bottom: 20px;
 }
 
-/* Style labels */
 #feedbackForm label {
     display: block;
     font-weight: bold;
@@ -798,7 +837,6 @@ h1 {
     font-size: 1.1em;
 }
 
-/* Style input fields */
 #feedbackForm input,
 #feedbackForm textarea {
     width: 100%;
@@ -808,7 +846,6 @@ h1 {
     font-size: 1.1em;
 }
 
-/* Style the submit button */
 #feedbackForm button {
     background-color: #4CAF50;
     color: white;
@@ -825,7 +862,6 @@ h1 {
     background-color: #45a049;
 }
 
-/* Ensure responsiveness */
 @media (max-width: 700px) {
     h1 {
         font-size: 1.8em;
@@ -833,6 +869,232 @@ h1 {
 
     #feedbackForm {
         padding: 20px;
-        max-width: 95%; /* Ensures it fits within smaller screens */
+        max-width: 95%; 
     }
+}
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding-top: 20px;
+  }
+
+  .profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #ccc;
+    display: inline-block;
+    text-align: center;
+    line-height: 150px;
+    font-size: 2em;
+    color: white;
+  }
+
+  .profile-pic img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  .profile-info {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .profile-info h3 {
+    margin-bottom: 20px;
+  }
+
+  .profile-info p {
+    margin: 10px 0;
+    font-size: 1.2em;
+  }
+
+  .edit-btn {
+    margin-top: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  .edit-btn:hover {
+    background-color: #0056b3;
+  }
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.chats-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.chat-item {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.chat-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.chat-item span {
+    font-size: 18px;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#chat-header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+#chat-messages {
+    padding: 10px;
+    max-height: 250px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+#user-input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: none;
+    border-top: 1px solid #ccc;
+    outline: none;
+    background-color: #f1f1f1;
+}
+
+.user {
+    background-color: #d1e7dd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    max-width: 80%;
+    margin-left: auto;
+    text-align: right;
+}
+
+.bot {
+    background-color: #f8d7da;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    max-width: 80%;
+    margin-right: auto;
+    text-align: left;
+}
+
+button {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+        .product-card .price {
+            color: green;
+            font-weight: bold;
+        }
+
+        .remove-btn {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background-color: darkred;
+        }
+
+
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; 
+    margin: 20px auto;
+}
+
+#search-bar {
+    width: 450px;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#search-btn {
+    padding: 10px 17px;
+    margin-top: -1px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#search-btn:hover {
+    background-color: #45a049;
+}
+
+#search-bar:focus {
+    border-color: #4CAF50;
 }

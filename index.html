@@ -6,157 +6,8 @@
     <title>MokeSell - Home</title>
     <link rel="stylesheet" href="style.css">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
-
-        .slider-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            margin: 20px 0;
-        }
-
-        .slider {
-            width: 750px;
-            height: 250px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .slider img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-        }
-
-        .slider img.active {
-            display: block;
-        }
-
-        .slider-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            font-size: 18px;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-        }
-
-        .slider-btn:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
-        .prev {
-            left: 120px;
-        }
-
-        .next {
-            right: 120px;
-        }
-
-        .product-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        .product-list {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            padding: 20px 0;
-            width: 80%;
-            scrollbar-width: none;
-        }
-
-        .product-list::-webkit-scrollbar {
-            display: none; 
-        }
-
-        .product-card {
-            background-color: white;
-            padding: 1rem;
-            min-width: 250px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .product-card img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-
-        .product-card h3 {
-            font-size: 1.2rem;
-            margin: 10px 0;
-        }
-
-        .product-card .price {
-            font-weight: bold;
-            color: #e74c3c;
-        }
-
-        .scroll-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            font-size: 18px;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            z-index: 1; 
-        }
-
-        .scroll-btn:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
-        .scroll-left {
-            left: 55px;
-        }
-
-        .scroll-right {
-            right: 55px;
-        }
-
-
-.heart:hover {
-    transform: scale(1.1); /* Optional: slightly enlarges the heart on hover */
-}
-
-    </style>
 </head>
 <body>
-
     <div id="header-container"></div>
     <script>
         fetch('header.html')
@@ -190,7 +41,7 @@ function handleBuyNow(productName, productCost) {
         </div>
         <button class="slider-btn next" onclick="changeSlide(1)">›</button>
     </div>
-
+    <div class="discount-label">NOW DISCOUNTED!</div>
     <div class="product-container">
         <button class="scroll-btn scroll-left" onclick="scrollLeft('product-list-1')">‹</button>
         
@@ -217,27 +68,34 @@ function handleBuyNow(productName, productCost) {
         setInterval(autoChangeSlide, 10000); // Change slide every 10 seconds
 
         const products = [
-            { name: 'Razor Gaming Laptop', price: '$999', image: 'https://assets2.razerzone.com/images/pnx.assets/5af9b83e1a46bac99f7ed80fd498390d/razer-blade-14-p10-500x500.webp' },
-            { name: 'Plain Brown T-Shirt', price: '$20', image: 'https://timshop.timhortons.ca/cdn/shop/files/retro-logo-tshirt-back-1000px.png?v=1707853862&width=1000' },
-            { name: 'IKEA Sofa', price: '$500', image: 'https://www.ikea.com/sg/en/images/products/vimle-3-seat-sofa-gunnared-medium-grey__0514368_pe639441_s5.jpg' },
-            { name: 'Spalding Basketball', price: '$30', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO3LEUBf33rVxGT7x8_-MgfAhvlF9fbtgUfg&s' },
-            { name: 'iPhone 16 ', price: '$799', image: 'https://www.imagineonline.store/cdn/shop/files/iPhone_15_Pink_PDP_Image_Position-1_alt__en-IN.jpg?v=1694605260&width=823' },
-            { name: 'Bomber Jacket', price: '$100', image: 'https://png.pngtree.com/png-clipart/20240129/original/pngtree-mens-jacket-isolated-on-white-background-png-image_14178161.png' }
-        ];
+    { name: 'Razor Gaming Laptop', oldPrice: '$1200', price: '$999', image: 'https://assets2.razerzone.com/images/pnx.assets/5af9b83e1a46bac99f7ed80fd498390d/razer-blade-14-p10-500x500.webp' },
+    { name: 'Plain Brown T-Shirt', oldPrice: '$25', price: '$20', image: 'https://timshop.timhortons.ca/cdn/shop/files/retro-logo-tshirt-back-1000px.png?v=1707853862&width=1000' },
+    { name: 'IKEA Sofa', oldPrice: '$600', price: '$500', image: 'https://www.ikea.com/sg/en/images/products/vimle-3-seat-sofa-gunnared-medium-grey__0514368_pe639441_s5.jpg' },
+    { name: 'Spalding Basketball', oldPrice: '$40', price: '$30', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO3LEUBf33rVxGT7x8_-MgfAhvlF9fbtgUfg&s' },
+    { name: 'iPhone 16 ', oldPrice: '$899', price: '$799', image: 'https://www.imagineonline.store/cdn/shop/files/iPhone_15_Pink_PDP_Image_Position-1_alt__en-IN.jpg?v=1694605260&width=823' },
+    { name: 'Bomber Jacket', oldPrice: '$130', price: '$100', image: 'https://png.pngtree.com/png-clipart/20240129/original/pngtree-mens-jacket-isolated-on-white-background-png-image_14178161.png' }
+];
 
-        function insertProducts(listId) {
-            const productList = document.getElementById(listId);
-            products.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.classList.add('product-card');
-                productCard.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}">
-                    <h3>${product.name}</h3>
-                    <span class="price">${product.price}</span>
-                `;
-                productList.appendChild(productCard);
-            });
-        }
+
+function insertProducts(listId) {
+    const productList = document.getElementById(listId);
+    products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-card');
+        productCard.setAttribute('data-name', product.name); 
+        productCard.setAttribute('data-price', product.price); 
+        productCard.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <span class="old-price" style="text-decoration: line-through; color: gray; margin-right: 5px;">${product.oldPrice}</span>
+            <span class="price" style="color: red; font-weight: bold;">${product.price}</span>
+            <button class="buy-now-btn" onclick="handleBuyNow('${product.name}', ${parseFloat(product.price.replace('$', ''))})">Buy Now</button>
+        `;
+
+        productList.appendChild(productCard);
+    });
+}
+
 
         insertProducts('product-list-1');
 
@@ -263,28 +121,23 @@ function handleBuyNow(productName, productCost) {
     const existingIndex = favourites.findIndex(item => item.name === productName);
 
     if (existingIndex !== -1) {
-        // Remove item if already in favourites
         favourites.splice(existingIndex, 1);
         heartElement.classList.remove("liked");
     } else {
-        // Add item if not in favourites
         favourites.push({ name: productName, price: productPrice, image: productImage });
         heartElement.classList.add("liked");
     }
 
-    // Save updated favourites list to localStorage
     localStorage.setItem('favourites', JSON.stringify(favourites));
 }
 
-// Restore heart states on page load
 window.onload = function() {
     const hearts = document.querySelectorAll('.heart');
     let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
 
-    // Loop through each heart and check if the product is in the favourites list
     hearts.forEach(heart => {
         const productName = heart.getAttribute('data-product');
-        const isLiked = favourites.some(item => item.name === productName);  // Check if product is in favourites
+        const isLiked = favourites.some(item => item.name === productName);  
 
         if (isLiked) {
             heart.classList.add("liked");
@@ -294,9 +147,59 @@ window.onload = function() {
     });
 };
 
+
+</script>
+<script>
+    
+ window.onload = function() {
+    const searchBar = document.getElementById('search-bar'); 
+    const searchButton = document.getElementById('search-btn');
+    
+    function performSearchAction() {
+        const searchText = searchBar.value.toLowerCase();
+        
+        if (searchText === 'bikes') {
+            document.getElementById('Bikes').scrollIntoView({
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        } else if (searchText === 'tables') {
+            document.getElementById('Tables').scrollIntoView({
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        } else if (searchText === 'cases') {
+            document.getElementById('cases').scrollIntoView({
+                behavior: 'smooth', 
+                block: 'start'
+            });
+        } else if (searchText === 'electronics') {
+            document.getElementById('Electronics').scrollIntoView({
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }
+    }
+
+    searchBar.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            performSearchAction();
+        }
+    });
+
+    searchButton.addEventListener('click', function() {
+        performSearchAction();
+    });
+};
+
 </script>
 
-    </script>
+
+<div class="search-container">
+    <input type="text" id="search-bar" placeholder="Search for products..." />
+    <button id="search-btn" onclick="performSearch()">Search</button>
+</div>
+
 
 <section class="featured-items">
         <h2 id="Bikes" data-category="Bikes">Bikes</h2>
@@ -395,12 +298,12 @@ window.onload = function() {
                 <button class="buy-now-btn" onclick="handleBuyNow('Shockproof iPhone Cover, Anti-Scratch Clear Back', 10)">Buy Now</button>
             </div>
     
-            <div class="product-card" data-name="Samsung Galaxy Clear Reinforced Corners Case" data-price="15" data-category="Cases">
+            <div class="product-card" data-name="Samsung Galaxy S24 Ultra Clear Reinforced Corners Case" data-price="15" data-category="Cases">
                 <img src="https://m.media-amazon.com/images/I/71HI-jE0a4L.jpg" alt="Case 4">
-                <h3>Samsung Galaxy Clear Reinforced Corners Case</h3>
+                <h3>Samsung Galaxy S24 Ultra Clear Reinforced Corners Case</h3>
                 <p class="price">$15</p>
-                <div class="heart" data-product="Samsung Galaxy Clear Reinforced Corners Case" onclick="toggleLike(this)"></div>
-                <button class="buy-now-btn" onclick="handleBuyNow('Samsung Galaxy Clear Reinforced Corners Case', 15)">Buy Now</button>
+                <div class="heart" data-product="Samsung Galaxy S24 Ultra Clear Reinforced Corners Case" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('Samsung Galaxy S24 Ultra Clear Reinforced Corners Case', 15)">Buy Now</button>
             </div>
         </div>
     
@@ -422,25 +325,22 @@ window.onload = function() {
                 <button class="buy-now-btn" onclick="handleBuyNow('Logitech Z407 40 W Anthracite Wired', 118)">Buy Now</button>
             </div>
     
-            <div class="product-card" data-name="Magic Mouse (USB‑C) - White Multi-Touch Surface" data-price="99" data-category="Electronics">
+            <div class="product-card" data-name="Magic Mouse (USB‑C) - White Multi-Touch" data-price="99" data-category="Electronics">
                 <img src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/MXK53?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1730508286345" alt="Electronics 3">
-                <h3>Magic Mouse (USB‑C) - White Multi-Touch Surface</h3>
+                <h3>Magic Mouse (USB‑C) - White Multi-Touch</h3>
                 <p class="price">$99</p>
-                <div class="heart" data-product="Magic Mouse (USB‑C) - White Multi-Touch Surface" onclick="toggleLike(this)"></div>
-                <button class="buy-now-btn" onclick="handleBuyNow('Magic Mouse (USB‑C) - White Multi-Touch Surface', 99)">Buy Now</button>
+                <div class="heart" data-product="Magic Mouse (USB‑C) - White Multi-Touch" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('Magic Mouse (USB‑C) - White Multi-Touch', 99)">Buy Now</button>
             </div>
     
-            <div class="product-card" data-name="HP Wireless Mouse, Z3700, Quiet, Dual Wired Mouse" data-price="15" data-category="Electronics">
+            <div class="product-card" data-name="HP Wireless Mouse Dual Wired Mouse" data-price="15" data-category="Electronics">
                 <img src="https://cdn2.electronicscrazy.sg/Productimage/2024-10-2401-39-2645.webp" alt="Electronics 4">
-                <h3>HP Wireless Mouse, Z3700, Quiet, Dual Wired Mouse</h3>
+                <h3>HP Wireless Mouse Dual Wired Mouse</h3>
                 <p class="price">$15</p>
-                <div class="heart" data-product="HP Wireless Mouse, Z3700, Quiet, Dual Wired Mouse" onclick="toggleLike(this)"></div>
-                <button class="buy-now-btn" onclick="handleBuyNow('HP Wireless Mouse, Z3700, Quiet, Dual Wired Mouse', 15)">Buy Now</button>
+                <div class="heart" data-product="HP Wireless Mouse Dual Wired Mouse" onclick="toggleLike(this)"></div>
+                <button class="buy-now-btn" onclick="handleBuyNow('HP Wireless Mouse Dual Wired Mouse', 15)">Buy Now</button>
             </div>
         </div>
-    </section>
-    
-
-
+    </section>    
 </body>
 </html>
